@@ -1,8 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
 export function SystemMockup() {
+  // Estado do MODO: 'uvis' (Prefeitura/Urbano) ou 'agro' (Agrícola)
+  const [mode, setMode] = useState<"uvis" | "agro">("uvis");
+  const isAgro = mode === "agro";
+
+  // Navegação da Sidebar
   const [activeNav, setActiveNav] = useState("Dashboard");
 
   // Estados interativos do Dashboard
@@ -17,7 +23,8 @@ export function SystemMockup() {
   const [filterOpen, setFilterOpen] = useState(false);
   const [agendaView, setAgendaView] = useState<"Mês" | "Lista">("Mês");
 
-  const navItems = [
+  // Menus da Sidebar conforme o Modo
+  const uvisNav = [
     { label: "Dashboard", icon: "▦" },
     { label: "Histórico OS", icon: "🕒" },
     { label: "Notificações", icon: "🔔", badge: "34" },
@@ -32,407 +39,414 @@ export function SystemMockup() {
     { label: "Mapas", icon: "📍", badge: "LIVE" },
   ];
 
+  const agroNav = [
+    { label: "Talhões & Lavoura", icon: "🌱" },
+    { label: "Missões Agro", icon: "🛸" },
+    { label: "Relatórios Agro", icon: "📊" },
+    { label: "Telemetria & Frota", icon: "🚜" },
+    { label: "Previsão do Tempo", icon: "🌤️" },
+    { label: "Mapas de Aplicação", icon: "📍", badge: "LIVE" },
+  ];
+
+  const navItems = isAgro ? agroNav : uvisNav;
+
   const handleSave = () => {
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
 
   return (
-    <section className="platform section" id="plataforma" style={{ padding: "4rem 0", background: "#f8faf7" }}>
-      <div className="container" style={{ maxWidth: "1240px", margin: "0 auto", padding: "0 1rem" }}>
+    <section 
+      className="platform section" 
+      id="plataforma" 
+      style={{ 
+        position: "relative", 
+        padding: "5rem 0", 
+        overflow: "hidden", 
+        transition: "all 0.5s ease" 
+      }}
+    >
+      {/* IMAGEM DE FUNDO REVERSÍVEL COM OVERLAY COLORIDO */}
+      <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+        <Image
+          src={isAgro ? "/images/agro-fundo.jpg" : "/images/cidade-fundo.jpg"}
+          alt={isAgro ? "Fundo Agrícola" : "Fundo Gestão Prefeitura"}
+          fill
+          style={{ objectFit: "cover", transition: "opacity 0.6s ease" }}
+        />
+        {/* Camada de Gradiente: Azul para UVIS, Verde para Agro */}
+        <div 
+          style={{ 
+            position: "absolute", 
+            inset: 0, 
+            background: isAgro 
+              ? "linear-gradient(135deg, rgba(10, 35, 15, 0.82) 0%, rgba(18, 55, 22, 0.78) 100%)" 
+                : "linear-gradient(135deg, rgba(4, 28, 48, 0.85) 0%, rgba(0, 58, 92, 0.78) 100%)",
+            transition: "all 0.5s ease"
+          }} 
+        />
+      </div>
+
+      <div className="container" style={{ position: "relative", zIndex: 1 }}>
         
-        {/* TÍTULO DA SEÇÃO */}
-        <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-          <span style={{ 
-            display: "inline-flex", 
-            alignItems: "center", 
-            gap: "0.5rem", 
-            padding: "0.4rem 1rem", 
-            borderRadius: "20px", 
-            background: "rgba(0, 136, 232, 0.1)", 
-            color: "#0088e8", 
-            fontSize: "0.8rem", 
-            fontWeight: "700" 
-          }}>
-            ✦ Interface intuitiva
+        {/* CABEÇALHO DA SEÇÃO */}
+        <div className="platform-heading" data-reveal style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+          <span 
+            className="system-pill" 
+            style={{ 
+              borderColor: isAgro ? "#8bc53f" : "#0088e8", 
+              color: isAgro ? "#a3e635" : "#38bdf8",
+              background: "rgba(255,255,255,0.08)"
+            }}
+          >
+            <i aria-hidden="true" /> {isAgro ? "IJA System Agro" : "IJA System UVIS (Prefeituras)"}
           </span>
-          <h2 style={{ fontSize: "2.5rem", fontWeight: "800", color: "#0f172a", marginTop: "0.8rem", lineHeight: "1.2" }}>
-            Poder e controle <br />
-            <span style={{ color: "#0088e8" }}>na palma da mão</span>
+          <h2 style={{ color: "#ffffff", marginTop: "0.8rem" }}>
+            {isAgro ? (
+              <>Gestão Agrícola de Precisão<br /><span style={{ color: "#a3e635" }}>cada hectare sob controle</span></>
+            ) : (
+              <>Poder e Controle Operacional<br /><span style={{ color: "#38bdf8" }}>gestão eficiente para prefeituras</span></>
+            )}
           </h2>
-          <p style={{ color: "#64748b", marginTop: "0.8rem", fontSize: "1rem", maxWidth: "600px", marginInline: "auto" }}>
-            Nossa interface foi desenhada para facilitar a vida do gestor. Acompanhe cada detalhe da operação em tempo real com clareza.
+          <p style={{ color: "rgba(255, 255, 255, 0.8)", maxWidth: "640px", marginInline: "auto" }}>
+            {isAgro
+              ? "Acompanhe seus talhões, relatórios de aplicação aérea, mapas de vegetação e a telemetria em tempo real das suas missões no campo."
+              : "Interface desenvolvida para a rotina do setor público. Gerencie solicitações, agentes, rotas de fiscalização e relatórios operacionais."
+            }
           </p>
         </div>
 
-        {/* CONTAINER DA JANELA DO MOCKUP */}
-        <div style={{ 
-          background: "#ffffff", 
-          borderRadius: "16px", 
-          border: "1px solid #cbd5e1", 
-          boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.15)", 
-          overflow: "hidden" 
-        }}>
-          
-          {/* BARRA SUPERIOR DO NAVEGADOR */}
-          <div style={{ 
-            background: "#0f172a", 
-            padding: "0.75rem 1.25rem", 
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "space-between",
-            borderBottom: "1px solid #1e293b"
+        {/* BOTÃO ALTERNADOR FORA DO MOCKUP */}
+        <div data-reveal style={{ display: "flex", justifyContent: "center", marginBottom: "2.5rem" }}>
+          <div style={{
+            display: "inline-flex",
+            background: "rgba(255, 255, 255, 0.12)",
+            backdropFilter: "blur(12px)",
+            padding: "5px",
+            borderRadius: "40px",
+            border: "1px solid rgba(255, 255, 255, 0.2)",
+            gap: "4px"
           }}>
-            <div style={{ display: "flex", gap: "6px" }}>
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#ef4444" }} />
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#f59e0b" }} />
-              <span style={{ width: "10px", height: "10px", borderRadius: "50%", background: "#10b981" }} />
-            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setMode("uvis");
+                setActiveNav("Dashboard");
+              }}
+              style={{
+                padding: "9px 24px",
+                borderRadius: "30px",
+                border: "none",
+                background: !isAgro ? "#0088e8" : "transparent",
+                color: "#ffffff",
+                fontWeight: "700",
+                fontSize: "0.85rem",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                boxShadow: !isAgro ? "0 4px 14px rgba(0, 136, 232, 0.4)" : "none"
+              }}
+            >
+              Prefeitura (UVIS)
+            </button>
 
-            <div style={{ 
-              background: "#1e293b", 
-              color: "#94a3b8", 
-              padding: "0.3rem 1.5rem", 
-              borderRadius: "6px", 
-              fontSize: "0.75rem", 
-              fontFamily: "monospace" 
-            }}>
-              ⌕ app.ijasystem.com.br/{activeNav.toLowerCase()}
-            </div>
-
-            <div style={{ color: "#ffffff", fontSize: "0.75rem", fontWeight: "bold" }}>
-              ● ADMIN ⌄
-            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setMode("agro");
+                setActiveNav("Talhões & Lavoura");
+              }}
+              style={{
+                padding: "9px 24px",
+                borderRadius: "30px",
+                border: "none",
+                background: isAgro ? "#8bc53f" : "transparent",
+                color: "#ffffff",
+                fontWeight: "700",
+                fontSize: "0.85rem",
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+                boxShadow: isAgro ? "0 4px 14px rgba(139, 197, 63, 0.4)" : "none"
+              }}
+            >
+                Agro
+            </button>
           </div>
+        </div>
 
-          {/* ESTRUTURA DO SISTEMA: SIDEBAR + CONTEÚDO */}
-          <div style={{ display: "grid", gridTemplateColumns: "220px 1fr", minHeight: "600px" }}>
+        {/* CENTRO DA TELA: MOCKUP INTERATIVO */}
+        <div className="system-mockup" data-reveal aria-label="Demonstração do painel">
+          <div className="dashboard-glow" aria-hidden="true" style={{ background: isAgro ? "radial-gradient(circle, rgba(139,197,63,0.3), transparent 60%)" : "radial-gradient(circle, rgba(0,136,232,0.3), transparent 60%)" }} />
+          
+          <div className="system-window" style={{ background: "#f8fafc", color: "#0f172a" }}>
             
-            {/* SIDEBAR */}
-            <aside style={{ 
-              background: "#ffffff", 
-              borderRight: "1px solid #e2e8f0", 
-              display: "flex", 
-              flexDirection: "column", 
-              justifyContent: "space-between",
-              padding: "1rem 0"
-            }}>
-              <div>
-                <div style={{ padding: "0 1.25rem 1rem", borderBottom: "1px solid #f1f5f9" }}>
-                  <strong style={{ fontSize: "1rem", color: "#0f172a" }}>IJA System <small style={{ color: "#0088e8" }}>OA</small></strong>
-                </div>
+            {/* BROWSERBAR */}
+            <div className="system-browserbar">
+              <div className="browser-dots" aria-hidden="true"><i /><i /><i /></div>
+              <div className="browser-address">
+                <span aria-hidden="true">⌕</span> app.ijasystem.com.br/{isAgro ? "agro" : "uvis"}/{activeNav.toLowerCase()}
+              </div>
+              <div className="system-profile">
+                <span aria-hidden="true">●</span>
+                <b>{isAgro ? "GESTOR AGRO" : "ADMIN PREFEITURA"}</b>
+                <i aria-hidden="true">⌄</i>
+              </div>
+            </div>
 
-                <nav style={{ display: "flex", flexDirection: "column", gap: "2px", padding: "0.5rem 0.5rem" }}>
-                  {navItems.map((item) => {
-                    const isActive = activeNav === item.label;
-                    return (
-                      <div
+            <div className="system-shell">
+              {/* SIDEBAR */}
+              <aside className="system-sidebar">
+                <div>
+                  <div className="system-logo">
+                    <span className="system-logo__mark" aria-hidden="true" style={{ color: isAgro ? "#8bc53f" : "#0088e8" }}>✦</span>
+                    <strong>IJA System <small style={{ color: isAgro ? "#8bc53f" : "#0088e8" }}>{isAgro ? "AGRO" : "UVIS"}</small></strong>
+                  </div>
+                  <nav aria-label="Menu do sistema">
+                    {navItems.map((item) => (
+                      <span
                         key={item.label}
+                        className={activeNav === item.label ? "is-active" : ""}
                         onClick={() => setActiveNav(item.label)}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          padding: "0.5rem 0.75rem",
-                          borderRadius: "8px",
-                          cursor: "pointer",
-                          background: isActive ? "rgba(0, 136, 232, 0.1)" : "transparent",
-                          color: isActive ? "#0088e8" : "#475569",
-                          fontWeight: isActive ? "700" : "500",
-                          fontSize: "0.82rem",
-                          transition: "all 0.15s"
-                        }}
+                        style={{ cursor: "pointer" }}
                       >
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
-                          <span style={{ fontSize: "0.9rem" }}>{item.icon}</span>
-                          {item.label}
-                        </span>
+                        <i aria-hidden="true">{item.icon}</i> {item.label}
                         {item.badge && (
-                          <span style={{
-                            background: item.badge === "LIVE" ? "#ef4444" : "#0088e8",
-                            color: "#ffffff",
-                            padding: "1px 6px",
-                            borderRadius: "10px",
-                            fontSize: "0.6rem",
-                            fontWeight: "bold"
-                          }}>
+                          <small style={{ marginLeft: "auto", background: item.badge === "LIVE" ? "#ef4444" : (isAgro ? "#8bc53f" : "#0088e8"), color: "#fff" }}>
                             {item.badge}
-                          </span>
+                          </small>
                         )}
-                      </div>
-                    );
-                  })}
-                </nav>
-              </div>
-
-              {/* OPERADOR */}
-              <div style={{ 
-                padding: "0.75rem 1.25rem", 
-                borderTop: "1px solid #f1f5f9", 
-                display: "flex", 
-                alignItems: "center", 
-                gap: "0.75rem" 
-              }}>
-                <div style={{ 
-                  width: "32px", 
-                  height: "32px", 
-                  borderRadius: "50%", 
-                  background: "#0088e8", 
-                  color: "#fff", 
-                  display: "grid", 
-                  placeItems: "center", 
-                  fontWeight: "800", 
-                  fontSize: "0.75rem" 
-                }}>
-                  PH
+                      </span>
+                    ))}
+                  </nav>
                 </div>
-                <div>
-                  <strong style={{ display: "block", fontSize: "0.8rem", color: "#0f172a" }}>Pedro H.</strong>
-                  <small style={{ color: "#94a3b8", fontSize: "0.7rem" }}>Administrador</small>
+                <div className="system-operator">
+                  <span>PH</span>
+                  <p><strong>Pedro H.</strong><small>{isAgro ? "Engenheiro Agrônomo" : "Administrador"}</small></p>
                 </div>
-              </div>
-            </aside>
+              </aside>
 
-            {/* CONTEÚDO PRINCIPAL (ALTERNA COM OS CLIQUES DO MENU) */}
-            <main style={{ background: "#f8fafc", padding: "1.5rem", overflowY: "auto", maxHeight: "600px" }}>
-              
-              {/* TELA 1: DASHBOARD / DETALHES DA OCORRÊNCIA */}
-              {activeNav === "Dashboard" && (
-                <div>
-                  <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                    <div>
-                      <small style={{ color: "#64748b" }}>Visão geral</small>
-                      <h3 style={{ margin: 0, fontSize: "1.3rem", fontWeight: "800", color: "#0f172a" }}>Painel de Gestão</h3>
-                    </div>
-                    <div style={{ display: "flex", gap: "0.5rem" }}>
-                      <button style={{ padding: "0.4rem 0.8rem", borderRadius: "6px", border: "1px solid #cbd5e1", background: "#fff", fontSize: "0.75rem", cursor: "pointer" }}>Filtros</button>
-                      <button style={{ padding: "0.4rem 0.8rem", borderRadius: "6px", border: "none", background: "#0088e8", color: "#fff", fontWeight: "bold", fontSize: "0.75rem", cursor: "pointer" }}>Exportar</button>
-                    </div>
-                  </header>
+              {/* CONTEÚDO PRINCIPAL DO MOCKUP */}
+              <div className="system-content">
+                
+                {/* MODO PREFEITURA (UVIS) - DASHBOARD */}
+                {!isAgro && activeNav === "Dashboard" && (
+                  <>
+                    <header className="system-content__header">
+                      <div><small>Visão Geral Prefeitura</small><h3>Painel de Ocorrências UVIS</h3></div>
+                      <div className="system-actions"><span>Filtros</span><b>Exportar OS</b></div>
+                    </header>
 
-                  <div style={{ background: "#fff", borderRadius: "10px", border: "1px solid #e2e8f0", padding: "1.25rem", marginBottom: "1rem" }}>
-                    <h4 style={{ margin: 0, fontSize: "1.1rem", color: "#0f172a" }}>◇ Detalhes da Ocorrência</h4>
-                    
-                    <div style={{ marginTop: "1rem", display: "grid", gridTemplateColumns: "1.2fr 1fr 1fr", gap: "1rem" }}>
-                      {/* Resumo */}
-                      <div style={{ borderRight: "1px solid #f1f5f9", paddingRight: "1rem" }}>
+                    <div className="system-section-title"><span aria-hidden="true">◇</span> Detalhes da Solicitação Urbana</div>
+
+                    <article className="occurrence-card">
+                      <div className="occurrence-summary">
                         <input 
                           type="text" 
                           value={titulo} 
-                          onChange={(e) => setTitulo(e.target.value)} 
-                          style={{ width: "100%", padding: "0.4rem", fontWeight: "bold", fontSize: "1rem", border: "1px solid #cbd5e1", borderRadius: "6px" }} 
+                          onChange={(e) => setTitulo(e.target.value)}
+                          style={{ background: "transparent", border: "none", fontWeight: "bold", fontSize: "1rem", color: "inherit", width: "100%" }}
                         />
-                        <div style={{ display: "flex", gap: "0.4rem", marginTop: "0.5rem" }}>
-                          <span style={{ background: status === "Aprovado" ? "#10b98122" : "#f59e0b22", color: status === "Aprovado" ? "#10b981" : "#f59e0b", padding: "2px 8px", borderRadius: "12px", fontSize: "0.7rem", fontWeight: "bold" }}>{status}</span>
-                          <span style={{ background: "#f1f5f9", color: "#475569", padding: "2px 8px", borderRadius: "12px", fontSize: "0.7rem", fontWeight: "bold" }}>Sul</span>
+                        <div className="occurrence-tags">
+                          <span style={{ background: status === "Aprovado" ? "#10b98122" : "#f59e0b22", color: status === "Aprovado" ? "#10b981" : "#f59e0b" }}>
+                            {status}
+                          </span>
+                          <span>Setor Sul</span>
                         </div>
-                        <p style={{ fontSize: "0.75rem", color: "#64748b", marginTop: "0.8rem" }}>◷ 08/01/2026 às 13:00<br />⌖ Av. Paulista, 09 — Bela Vista</p>
+                        <dl>
+                          <div><dt aria-hidden="true">◷</dt><dd>08/01/2026 às 13:00</dd></div>
+                          <div><dt aria-hidden="true">⌖</dt><dd>Av. Paulista, 09 — Bela Vista<small>CEP: 01310-930</small></dd></div>
+                        </dl>
                       </div>
 
-                      {/* Localização e Tipos */}
-                      <div style={{ borderRight: "1px solid #f1f5f9", paddingRight: "1rem" }}>
-                        <div style={{ fontSize: "0.75rem", fontWeight: "bold", color: "#0088e8", marginBottom: "0.5rem" }}>-23.55819, -46.65984 ⌖</div>
-                        <label style={{ fontSize: "0.7rem", color: "#64748b", display: "block" }}>Tipo de Praga:</label>
-                        <select value={tipo} onChange={(e) => setTipo(e.target.value)} style={{ width: "100%", padding: "0.3rem", borderRadius: "4px", border: "1px solid #cbd5e1", marginBottom: "0.5rem", fontSize: "0.75rem" }}>
-                          <option value="Culex">Culex</option>
-                          <option value="Aedes aegypti">Aedes aegypti</option>
-                        </select>
-
-                        <label style={{ fontSize: "0.7rem", color: "#64748b", display: "block" }}>Foco Identificado:</label>
-                        <select value={foco} onChange={(e) => setFoco(e.target.value)} style={{ width: "100%", padding: "0.3rem", borderRadius: "4px", border: "1px solid #cbd5e1", fontSize: "0.75rem" }}>
-                          <option value="Imóvel Abandonado">Imóvel Abandonado</option>
-                          <option value="Terreno Baldio">Terreno Baldio</option>
-                        </select>
+                      <div className="occurrence-location">
+                        <div className="coordinate">-23.55819, -46.65984 <span aria-hidden="true">⌖</span></div>
+                        <dl>
+                          <dt>Tipo:</dt>
+                          <dd>
+                            <select value={tipo} onChange={(e) => setTipo(e.target.value)} style={{ background: "transparent", border: "none", color: "inherit" }}>
+                              <option value="Culex">Culex</option>
+                              <option value="Aedes aegypti">Aedes aegypti</option>
+                            </select>
+                          </dd>
+                          <dt>Foco:</dt>
+                          <dd>
+                            <select value={foco} onChange={(e) => setFoco(e.target.value)} style={{ background: "transparent", border: "none", color: "inherit" }}>
+                              <option value="Imóvel Abandonado">Imóvel Abandonado</option>
+                              <option value="Terreno Baldio">Terreno Baldio</option>
+                            </select>
+                          </dd>
+                        </dl>
                       </div>
 
-                      {/* Status e Ação */}
-                      <div>
-                        <label style={{ fontSize: "0.7rem", color: "#64748b", display: "block" }}>Alterar Status:</label>
-                        <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ width: "100%", padding: "0.3rem", borderRadius: "4px", border: "1px solid #cbd5e1", marginBottom: "0.5rem", fontSize: "0.75rem" }}>
+                      <div className="occurrence-status">
+                        <label>Status</label>
+                        <select 
+                          value={status} 
+                          onChange={(e) => setStatus(e.target.value)}
+                          style={{ width: "100%", padding: "4px", borderRadius: "4px", background: "rgba(255,255,255,0.1)", color: "inherit" }}
+                        >
                           <option value="Aprovado">Aprovar</option>
                           <option value="Pendente">Pendente</option>
                           <option value="Em análise">Em análise</option>
                         </select>
 
-                        <label style={{ fontSize: "0.7rem", color: "#64748b", display: "block" }}>Piloto Responsável:</label>
-                        <select value={piloto} onChange={(e) => setPiloto(e.target.value)} style={{ width: "100%", padding: "0.3rem", borderRadius: "4px", border: "1px solid #cbd5e1", marginBottom: "0.8rem", fontSize: "0.75rem" }}>
+                        <label style={{ marginTop: "6px" }}>Piloto responsável</label>
+                        <select 
+                          value={piloto} 
+                          onChange={(e) => setPiloto(e.target.value)}
+                          style={{ width: "100%", padding: "4px", borderRadius: "4px", background: "rgba(255,255,255,0.1)", color: "inherit" }}
+                        >
                           <option value="Piloto 1 (LESTE)">Piloto 1 (LESTE)</option>
                           <option value="Piloto 2 (SUL)">Piloto 2 (SUL)</option>
                         </select>
 
-                        <button onClick={handleSave} style={{ width: "100%", padding: "0.5rem", background: saved ? "#10b981" : "#0088e8", color: "#fff", border: "none", borderRadius: "6px", fontWeight: "bold", fontSize: "0.75rem", cursor: "pointer" }}>
-                          {saved ? "Salvo!" : "Salvar Alterações"}
+                        <button 
+                          type="button" 
+                          onClick={handleSave}
+                          style={{ marginTop: "8px", padding: "6px", borderRadius: "4px", background: saved ? "#10b981" : "#0088e8", color: "#fff", border: "none", cursor: "pointer" }}
+                        >
+                          {saved ? "Salvo!" : "Salvar"}
                         </button>
                       </div>
+                    </article>
+
+                    <div className="system-stats">
+                      <div><span>Ocorrências hoje</span><strong>18</strong><i>+4 desde ontem</i></div>
+                      <div><span>Em análise</span><strong>07</strong><i>Equipe conectada</i></div>
+                      <div><span>Operações aprovadas</span><strong>42</strong><i>Este mês</i></div>
+                    </div>
+                  </>
+                )}
+
+                {/* MODO PREFEITURA (UVIS) - RELATÓRIOS E AGENDA */}
+                {!isAgro && activeNav === "Relatórios" && (
+                  <div>
+                    <header className="system-content__header">
+                      <div><small>Relatórios de Gestão Pública</small><h3>Solicitações filtradas: 1332</h3></div>
+                      <div className="system-actions"><span>Relatório OS</span><b>Exportar PDF</b></div>
+                    </header>
+                    <div className="system-section-title">Dados de Agosto / 2026</div>
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "0.5rem" }}>
+                      {[
+                        { label: "TOTAL", val: "1332", color: "#0088e8" },
+                        { label: "PENDENTES", val: "13", color: "#64748b" },
+                        { label: "APROVADAS", val: "207", color: "#10b981" },
+                        { label: "CONCLUÍDAS", val: "827", color: "#a855f7" },
+                        { label: "RECUSADAS", val: "256", color: "#ef4444" },
+                      ].map((card) => (
+                        <div key={card.label} style={{ background: "rgba(0,0,0,0.03)", padding: "0.6rem", borderRadius: "6px", borderLeft: `3px solid ${card.color}` }}>
+                          <span style={{ fontSize: "0.6rem", opacity: 0.8 }}>{card.label}</span>
+                          <div style={{ fontSize: "1.2rem", fontWeight: "bold", color: card.color }}>{card.val}</div>
+                        </div>
+                      ))}
                     </div>
                   </div>
+                )}
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "0.8rem" }}>
-                    <div style={{ background: "#fff", padding: "0.8rem", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                      <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Ocorrências Hoje</span>
-                      <strong style={{ display: "block", fontSize: "1.2rem", color: "#0f172a" }}>18</strong>
-                    </div>
-                    <div style={{ background: "#fff", padding: "0.8rem", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                      <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Em análise</span>
-                      <strong style={{ display: "block", fontSize: "1.2rem", color: "#0f172a" }}>07</strong>
-                    </div>
-                    <div style={{ background: "#fff", padding: "0.8rem", borderRadius: "8px", border: "1px solid #e2e8f0" }}>
-                      <span style={{ fontSize: "0.7rem", color: "#64748b" }}>Aprovadas este mês</span>
-                      <strong style={{ display: "block", fontSize: "1.2rem", color: "#10b981" }}>42</strong>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* TELA 2: RELATÓRIOS (LAYOUT OCEANO AZUL) */}
-              {activeNav === "Relatórios" && (
-                <div>
-                  <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                    <div>
-                      <h3 style={{ margin: 0, fontSize: "1.3rem", fontWeight: "800", color: "#0f172a" }}>📊 Relatórios</h3>
-                      <small style={{ color: "#64748b" }}>Solicitações filtradas: <strong>1332</strong></small>
-                    </div>
-                    <div style={{ display: "flex", gap: "0.4rem" }}>
-                      <button style={{ padding: "0.4rem 0.8rem", borderRadius: "16px", border: "1px solid #0088e8", background: "#fff", color: "#0088e8", fontWeight: "bold", fontSize: "0.75rem", cursor: "pointer" }}>📊 Relatório OS</button>
-                      <button style={{ padding: "0.4rem 0.8rem", borderRadius: "16px", border: "none", background: "#ef4444", color: "#fff", fontWeight: "bold", fontSize: "0.75rem", cursor: "pointer" }}>📄 Exportar PDF</button>
-                      <button style={{ padding: "0.4rem 0.8rem", borderRadius: "16px", border: "none", background: "#10b981", color: "#fff", fontWeight: "bold", fontSize: "0.75rem", cursor: "pointer" }}>📗 Exportar Excel</button>
-                    </div>
-                  </header>
-
-                  <div style={{ background: "#fff", borderRadius: "8px", border: "1px solid #e2e8f0", padding: "0.75rem", marginBottom: "1rem" }}>
-                    <div onClick={() => setFilterOpen(!filterOpen)} style={{ display: "flex", justifyContent: "space-between", cursor: "pointer", fontWeight: "700", fontSize: "0.85rem", color: "#0f172a" }}>
-                      <span>🔍 Filtros de busca</span>
-                      <span>{filterOpen ? "▲" : "▼"}</span>
-                    </div>
-                  </div>
-
-                  <strong style={{ display: "block", fontSize: "0.9rem", color: "#0f172a", marginBottom: "0.8rem" }}>Dados de Agosto / 2026</strong>
-
-                  {/* Cards do Relatório */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "0.6rem", marginBottom: "1.2rem" }}>
-                    {[
-                      { label: "TOTAL", val: "1332", border: "#0088e8", color: "#0f172a" },
-                      { label: "PENDENTES", val: "13", border: "#94a3b8", color: "#475569" },
-                      { label: "EM ANÁLISE", val: "0", border: "#eab308", color: "#ca8a04" },
-                      { label: "APROVADAS", val: "207", border: "#10b981", color: "#16a34a" },
-                      { label: "C/ RECOM.", val: "0", border: "#f97316", color: "#ea580c" },
-                      { label: "CONCLUÍDAS", val: "827", border: "#a855f7", color: "#9333ea" },
-                      { label: "RECUSADAS", val: "256", border: "#ef4444", color: "#dc2626" },
-                      { label: "CANCELADAS", val: "29", border: "#334155", color: "#1e293b" },
-                    ].map((card) => (
-                      <div key={card.label} style={{ background: "#fff", borderRadius: "8px", borderLeft: `4px solid ${card.border}`, padding: "0.6rem", borderTop: "1px solid #e2e8f0", borderRight: "1px solid #e2e8f0", borderBottom: "1px solid #e2e8f0" }}>
-                        <span style={{ fontSize: "0.6rem", color: "#64748b", fontWeight: "bold" }}>{card.label}</span>
-                        <div style={{ fontSize: "1.2rem", fontWeight: "bold", color: card.color }}>{card.val}</div>
+                {!isAgro && activeNav === "Agenda" && (
+                  <div>
+                    <header className="system-content__header">
+                      <div><small>Agendamentos de Aplicação</small><h3>agosto de 2026</h3></div>
+                      <div className="system-actions">
+                        <span onClick={() => setAgendaView(agendaView === "Mês" ? "Lista" : "Mês")} style={{ cursor: "pointer" }}>Visão: {agendaView}</span>
+                        <b>Rota do Dia</b>
                       </div>
-                    ))}
-                  </div>
+                    </header>
 
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-                    <div style={{ background: "#fff", padding: "1rem", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
-                      <strong style={{ fontSize: "0.85rem", color: "#0f172a" }}>🍩 Status</strong>
-                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "120px", marginTop: "0.5rem" }}>
-                        <div style={{ width: "80px", height: "80px", borderRadius: "50%", border: "16px solid #a855f7", borderTopColor: "#10b981", borderRightColor: "#ef4444" }} />
+                    <div style={{ background: "#fff", borderRadius: "8px", padding: "0.8rem", border: "1px solid #e2e8f0" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", textTransform: "uppercase", fontSize: "0.6rem", fontWeight: "bold", opacity: 0.6, marginBottom: "0.5rem", textAlign: "center" }}>
+                        <span>DOM</span><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span>
                       </div>
-                    </div>
-
-                    <div style={{ background: "#fff", padding: "1rem", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
-                      <strong style={{ fontSize: "0.85rem", color: "#0f172a" }}>📍 Solicitações por Região</strong>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", marginTop: "0.8rem" }}>
-                        {[
-                          { region: "NORTE", width: "90%" },
-                          { region: "LESTE", width: "55%" },
-                          { region: "SUL", width: "45%" },
-                        ].map((r) => (
-                          <div key={r.region} style={{ display: "grid", gridTemplateColumns: "50px 1fr", alignItems: "center", gap: "0.5rem" }}>
-                            <span style={{ fontSize: "0.65rem", fontWeight: "700", color: "#64748b" }}>{r.region}</span>
-                            <div style={{ background: "#f1f5f9", borderRadius: "10px", height: "10px", overflow: "hidden" }}>
-                              <div style={{ background: "#0088e8", height: "100%", width: r.width }} />
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {/* TELA 3: AGENDA */}
-              {activeNav === "Agenda" && (
-                <div>
-                  <header style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-                    <h3 style={{ margin: 0, fontSize: "1.3rem", fontWeight: "800", color: "#0f172a" }}>📅 Agenda</h3>
-                    <div style={{ display: "flex", gap: "0.4rem" }}>
-                      <button style={{ padding: "0.4rem 0.8rem", borderRadius: "6px", border: "none", background: "#ef4444", color: "#fff", fontWeight: "700", fontSize: "0.75rem", cursor: "pointer" }}>📌 Rota do Dia</button>
-                      <button style={{ padding: "0.4rem 0.8rem", borderRadius: "6px", border: "none", background: "#06b6d4", color: "#fff", fontWeight: "700", fontSize: "0.75rem", cursor: "pointer" }}>📄 Exportar Atual</button>
-                      <button style={{ padding: "0.4rem 0.8rem", borderRadius: "6px", border: "none", background: "#10b981", color: "#fff", fontWeight: "700", fontSize: "0.75rem", cursor: "pointer" }}>📥 Exportar Tudo</button>
-                    </div>
-                  </header>
-
-                  <div style={{ background: "#fff", borderRadius: "8px", border: "1px solid #e2e8f0", padding: "0.75rem", marginBottom: "1rem" }}>
-                    <div onClick={() => setFilterOpen(!filterOpen)} style={{ display: "flex", justifyContent: "space-between", cursor: "pointer", fontWeight: "700", fontSize: "0.85rem", color: "#0f172a" }}>
-                      <span>🔍 Filtros de busca</span>
-                      <span>{filterOpen ? "▲" : "▼"}</span>
-                    </div>
-                  </div>
-
-                  <div style={{ background: "#fff", borderRadius: "10px", border: "1px solid #e2e8f0", padding: "0.75rem", marginBottom: "1rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div style={{ display: "flex", gap: "0.3rem" }}>
-                      <button style={{ border: "1px solid #cbd5e1", background: "#fff", borderRadius: "50%", width: "28px", height: "28px", cursor: "pointer" }}>&lt;</button>
-                      <button style={{ border: "1px solid #cbd5e1", background: "#fff", borderRadius: "50%", width: "28px", height: "28px", cursor: "pointer" }}>&gt;</button>
-                      <button style={{ border: "1px solid #cbd5e1", background: "#fff", borderRadius: "14px", padding: "0 10px", fontSize: "0.75rem", cursor: "pointer" }}>Hoje</button>
-                    </div>
-                    <strong style={{ fontSize: "1.1rem", color: "#0f172a" }}>agosto de 2026</strong>
-                    <div style={{ background: "#f1f5f9", borderRadius: "20px", padding: "3px" }}>
-                      <button onClick={() => setAgendaView("Mês")} style={{ border: "none", background: agendaView === "Mês" ? "#1e3a8a" : "transparent", color: agendaView === "Mês" ? "#fff" : "#64748b", borderRadius: "16px", padding: "4px 12px", fontSize: "0.75rem", fontWeight: "700", cursor: "pointer" }}>Mês</button>
-                      <button onClick={() => setAgendaView("Lista")} style={{ border: "none", background: agendaView === "Lista" ? "#1e3a8a" : "transparent", color: agendaView === "Lista" ? "#fff" : "#64748b", borderRadius: "16px", padding: "4px 12px", fontSize: "0.75rem", fontWeight: "700", cursor: "pointer" }}>Lista</button>
-                    </div>
-                  </div>
-
-                  {agendaView === "Mês" ? (
-                    <div style={{ background: "#fff", borderRadius: "10px", border: "1px solid #e2e8f0", overflow: "hidden" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", background: "#f8fafc", borderBottom: "1px solid #e2e8f0", textAlign: "center", fontWeight: "700", fontSize: "0.7rem", color: "#64748b", padding: "8px 0" }}>
-                        <span>DOM.</span><span>SEG.</span><span>TER.</span><span>QUA.</span><span>QUI.</span><span>SEX.</span><span>SÁB.</span>
-                      </div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "1px", background: "#cbd5e1" }}>
+                      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "4px" }}>
                         {[2, 3, 4, 5, 6, 7, 8].map((day) => (
-                          <div key={day} style={{ background: "#fff", minHeight: "90px", padding: "6px" }}>
-                            <span style={{ fontSize: "0.75rem", fontWeight: "bold", color: "#475569" }}>{day}</span>
-                            <div style={{ display: "flex", flexDirection: "column", gap: "3px", marginTop: "4px" }}>
-                              <div style={{ background: "#3b82f6", color: "#fff", fontSize: "0.6rem", padding: "2px 4px", borderRadius: "4px", whiteSpace: "nowrap", overflow: "hidden" }}>Av. Angelina...</div>
-                              <div style={{ background: "#93c5fd", color: "#1e3a8a", fontSize: "0.6rem", padding: "2px 4px", borderRadius: "4px", whiteSpace: "nowrap", overflow: "hidden" }}>Rua Cachoeira...</div>
-                              {day === 5 && (
-                                <div style={{ background: "#f97316", color: "#fff", fontSize: "0.6rem", padding: "2px 4px", borderRadius: "4px", whiteSpace: "nowrap", overflow: "hidden" }}>Rua Hipólito...</div>
-                              )}
-                            </div>
+                          <div key={day} style={{ background: "#f8fafc", minHeight: "65px", padding: "4px", borderRadius: "4px", border: "1px solid #f1f5f9" }}>
+                            <span style={{ fontSize: "0.65rem", fontWeight: "bold" }}>{day}</span>
+                            {day === 3 && <div style={{ background: "#3b82f6", color: "#fff", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Av. Angelina</div>}
+                            {day === 4 && <div style={{ background: "#93c5fd", color: "#000", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Rua Cachoeira</div>}
+                            {day === 5 && <div style={{ background: "#f97316", color: "#fff", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Rua Hipólito</div>}
                           </div>
                         ))}
                       </div>
                     </div>
-                  ) : (
-                    <div style={{ background: "#fff", padding: "1rem", borderRadius: "10px", fontSize: "0.85rem", border: "1px solid #e2e8f0" }}>
-                      <div style={{ borderBottom: "1px solid #f1f5f9", padding: "8px 0" }}>📌 <strong>03/08/2026</strong> - Av. Angelina (Pulverização de Precisão)</div>
-                      <div style={{ borderBottom: "1px solid #f1f5f9", padding: "8px 0" }}>📌 <strong>04/08/2026</strong> - Rua Cachoeira do Japorê (Mapeamento)</div>
-                      <div style={{ padding: "8px 0" }}>📌 <strong>05/08/2026</strong> - Rua Hipólito (Voo Monitorado)</div>
-                    </div>
-                  )}
-                </div>
-              )}
+                  </div>
+                )}
 
-              {/* OUTRAS TELAS (PLACEHOLDER DE DEMONSTRAÇÃO) */}
-              {!["Dashboard", "Relatórios", "Agenda"].includes(activeNav) && (
-                <div style={{ textAlign: "center", padding: "3rem", background: "#fff", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
-                  <span style={{ fontSize: "2.5rem" }}>⚙️</span>
-                  <h4 style={{ margin: "0.8rem 0 0.3rem", color: "#0f172a" }}>Módulo de {activeNav}</h4>
-                  <p style={{ color: "#64748b", fontSize: "0.85rem" }}>Esta visualização está sincronizada com a base de dados do sistema em tempo real.</p>
-                </div>
-              )}
-            </main>
+                {/* MODO AGRO - TALHÕES E LAVOURA */}
+                {isAgro && (
+                  <div>
+                    <header className="system-content__header">
+                      <div><small>Agricultura de Precisão</small><h3>Monitoramento por Talhão</h3></div>
+                      <div className="system-actions">
+                        <span style={{ background: "rgba(139,197,63,0.15)", color: "#5d8f20", border: "1px solid #8bc53f" }}>Exportar NDVI</span>
+                        <b style={{ background: "#8bc53f", color: "#fff" }}>Novo Voo Agro</b>
+                      </div>
+                    </header>
+
+                    <div className="system-section-title"><span aria-hidden="true">🌱</span> Status da Lavoura / Safra 2026</div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "1rem", marginTop: "1rem" }}>
+                      <div style={{ background: "#fff", padding: "1rem", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                          <strong style={{ fontSize: "0.9rem", color: "#1e293b" }}>Talhão 04 — Milho</strong>
+                          <span style={{ background: "#10b98122", color: "#10b981", padding: "2px 8px", borderRadius: "10px", fontSize: "0.65rem", fontWeight: "bold" }}>Voo Concluído</span>
+                        </div>
+                        <small style={{ color: "#64748b", display: "block", marginTop: "0.2rem" }}>Área Total: 142 Hectares | Vazão: 10 L/ha</small>
+
+                        <div style={{ marginTop: "1rem", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
+                          <div style={{ background: "#f8fafc", padding: "0.5rem", borderRadius: "6px" }}>
+                            <span style={{ fontSize: "0.6rem", color: "#64748b" }}>Área Aplicada</span>
+                            <strong style={{ display: "block", fontSize: "1rem", color: "#0f172a" }}>100% (142 ha)</strong>
+                          </div>
+                          <div style={{ background: "#f8fafc", padding: "0.5rem", borderRadius: "6px" }}>
+                            <span style={{ fontSize: "0.6rem", color: "#64748b" }}>Produto Utilizado</span>
+                            <strong style={{ display: "block", fontSize: "0.85rem", color: "#0f172a" }}>Fungicida Sítio</strong>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div style={{ background: "#fff", padding: "1rem", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
+                        <strong style={{ fontSize: "0.85rem", color: "#1e293b" }}>Resumo da Frota Agrícola</strong>
+                        <div style={{ marginTop: "0.6rem", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+                          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", borderBottom: "1px solid #f1f5f9", paddingBottom: "4px" }}>
+                            <span>🛸 Drone Agrícola T40</span>
+                            <strong style={{ color: "#10b981" }}>Em Aplicação</strong>
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", borderBottom: "1px solid #f1f5f9", paddingBottom: "4px" }}>
+                            <span>🛸 Drone Mapeamento RTK</span>
+                            <strong style={{ color: "#0088e8" }}>Standby</strong>
+                          </div>
+                          <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem" }}>
+                            <span>🚜 Gerador & Base Móvel</span>
+                            <strong style={{ color: "#10b981" }}>Operacional</strong>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="system-stats" style={{ marginTop: "1rem" }}>
+                      <div><span>Hectares Pulverizados</span><strong>1.480 ha</strong><i>Este mês</i></div>
+                      <div><span>Economia de Água</span><strong>90%</strong><i>Vs. Trator</i></div>
+                      <div><span>Amassamento da Lavoura</span><strong>0%</strong><i>Aplicação Aérea</i></div>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+          </div>
+
+          <div className="system-online">
+            <i style={{ background: isAgro ? "#8bc53f" : "#0088e8" }} />
+            Sistema online <strong>Operação {isAgro ? "Agrícola" : "UVIS"} sincronizada</strong>
           </div>
         </div>
 
-        {/* INDICADOR ONLINE */}
-        <div style={{ textAlign: "center", marginTop: "1rem", fontSize: "0.8rem", color: "#10b981", fontWeight: "700" }}>
-          ● Sistema online — Operação sincronizada em tempo real
+        <div className="platform-cta" data-reveal style={{ textAlign: "center", marginTop: "2.5rem" }}>
+          <p style={{ color: "#ffffff" }}>
+            <strong>Gestão simples, decisão rápida.</strong> Conheça a plataforma que conecta sua equipe, seus equipamentos e cada missão.
+          </p>
+          <a className="button button--ink" href="#contato" style={{ background: isAgro ? "#8bc53f" : "#0088e8", color: "#fff" }}>
+            Solicitar demonstração <span aria-hidden="true">↗</span>
+          </a>
         </div>
       </div>
     </section>

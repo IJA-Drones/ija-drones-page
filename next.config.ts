@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
-const nextConfig = {
+const nextConfig: NextConfig = {
   experimental: {
     serverActions: {
-      allowedOrigins: ['*.ngrok-free.app', 'localhost:3000'],
+      allowedOrigins: ["*.ngrok-free.app", "localhost:3000", "127.0.0.1:3000"],
     },
   },
 };

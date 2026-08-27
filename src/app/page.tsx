@@ -121,7 +121,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* PLATAFORMA / MOCKUP INTERATIVO DO SISTEMA */}
+        {/* PLATAFORMA / MOCKUP INTERATIVO DUAL (UVIS x AGRO) */}
         <SystemMockup />
 
         {/* CAMPO */}
