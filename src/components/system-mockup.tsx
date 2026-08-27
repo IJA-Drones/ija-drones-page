@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Image from "next/image";
 
+import { OsHistoryScreen } from "@/components/system/os-history-screen";
+
 export function SystemMockup() {
   // Estado do MODO: 'uvis' (Prefeitura/Urbano) ou 'agro' (Agrícola)
   const [mode, setMode] = useState<"uvis" | "agro">("uvis");
@@ -20,7 +22,6 @@ export function SystemMockup() {
   const [saved, setSaved] = useState(false);
 
   // Estados dos Relatórios e Agenda
-  const [filterOpen, setFilterOpen] = useState(false);
   const [agendaView, setAgendaView] = useState<"Mês" | "Lista">("Mês");
 
   // Menus da Sidebar conforme o Modo
@@ -220,9 +221,12 @@ export function SystemMockup() {
           <div className="dashboard-glow" aria-hidden="true" style={{ background: isAgro ? "radial-gradient(circle, rgba(139,197,63,0.3), transparent 60%)" : "radial-gradient(circle, rgba(0,136,232,0.3), transparent 60%)" }} />
           
           <div className="system-window" style={{ background: "#f8fafc", color: "#0f172a" }}>
-            
-            {/* BROWSERBAR */}
-            <div className="system-browserbar">
+            {!isAgro && activeNav === "Histórico OS" ? (
+              <OsHistoryScreen onNavigate={setActiveNav} />
+            ) : (
+              <>
+                {/* BROWSERBAR */}
+                <div className="system-browserbar">
               <div className="browser-dots" aria-hidden="true"><i /><i /><i /></div>
               <div className="browser-address">
                 <span aria-hidden="true">⌕</span> app.ijasystem.com.br/{isAgro ? "agro" : "uvis"}/{activeNav.toLowerCase()}
@@ -232,9 +236,9 @@ export function SystemMockup() {
                 <b>{isAgro ? "GESTOR AGRO" : "ADMIN PREFEITURA"}</b>
                 <i aria-hidden="true">⌄</i>
               </div>
-            </div>
+                </div>
 
-            <div className="system-shell">
+                <div className="system-shell">
               {/* SIDEBAR */}
               <aside className="system-sidebar">
                 <div>
@@ -472,14 +476,18 @@ export function SystemMockup() {
                   </div>
                 )}
 
-              </div>
-            </div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
-          <div className="system-online">
-            <i style={{ background: isAgro ? "#8bc53f" : "#0088e8" }} />
-            Sistema online <strong>Operação {isAgro ? "Agrícola" : "UVIS"} sincronizada</strong>
-          </div>
+          {isAgro || activeNav !== "Histórico OS" ? (
+            <div className="system-online">
+              <i style={{ background: isAgro ? "#8bc53f" : "#0088e8" }} />
+              Sistema online <strong>Operação {isAgro ? "Agrícola" : "UVIS"} sincronizada</strong>
+            </div>
+          ) : null}
         </div>
 
         <div className="platform-cta" data-reveal style={{ textAlign: "center", marginTop: "2.5rem" }}>
