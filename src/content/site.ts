@@ -1,6 +1,6 @@
 export const site = {
   name: "IJA Drones",
-  email: "contato@ijadrones.com.br",
+  email: "suporte@ijadrones.com.br",
   navigation: [
     { label: "Visão", href: "#visao" },
     { label: "Soluções", href: "#solucoes" },
