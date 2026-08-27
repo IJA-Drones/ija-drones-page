@@ -66,28 +66,70 @@ export function SystemMockup() {
         transition: "all 0.5s ease" 
       }}
     >
-      {/* IMAGEM DE FUNDO REVERSÍVEL COM OVERLAY COLORIDO */}
-      <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+      {/* CONTAINER DE FUNDO COM TRANSITION INSTANTÂNEA E PRÉ-CARREGAMENTO */}
+        <div style={{ position: "absolute", inset: 0, zIndex: 0, overflow: "hidden", background: "#051318" }}>
+        
+        {/* IMAGEM MODO PREFEITURA / UVIS (Sempre carregada na memória) */}
         <Image
-          src={isAgro ? "/images/agro-fundo.jpg" : "/images/cidade-fundo.jpg"}
-          alt={isAgro ? "Fundo Agrícola" : "Fundo Gestão Prefeitura"}
-          fill
-          style={{ objectFit: "cover", transition: "opacity 0.6s ease" }}
+            src="/images/cidade-fundo.jpg"
+            alt="Fundo Gestão Prefeitura"
+            fill
+            priority
+            sizes="100vw"
+            style={{ 
+            objectFit: "cover", 
+            opacity: !isAgro ? 0.5 : 0, 
+            filter: "contrast(115%) brightness(90%)",
+            transform: "translateZ(0)",
+            willChange: "opacity",
+            transition: "opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1)" 
+            }}
         />
-        {/* Camada de Gradiente: Azul para UVIS, Verde para Agro */}
+
+        {/* IMAGEM MODO AGRO (Sempre carregada na memória) */}
+        <Image
+            src="/images/agro-fundo.jpg"
+            alt="Fundo Agrícola"
+            fill
+            priority
+            sizes="100vw"
+            style={{ 
+            objectFit: "cover", 
+            opacity: isAgro ? 0.5 : 0, 
+            filter: "contrast(115%) brightness(90%)",
+            transform: "translateZ(0)",
+            willChange: "opacity",
+            transition: "opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1)" 
+            }}
+        />
+        
+        {/* CAMADA DE COR INSTANTÂNEA (AZUL INSTITUCIONAL x VERDE AGRO) */}
         <div 
-          style={{ 
+            style={{ 
             position: "absolute", 
             inset: 0, 
             background: isAgro 
-              ? "linear-gradient(135deg, rgba(10, 35, 15, 0.82) 0%, rgba(18, 55, 22, 0.78) 100%)" 
-                : "linear-gradient(135deg, rgba(4, 28, 48, 0.85) 0%, rgba(0, 58, 92, 0.78) 100%)",
-            transition: "all 0.5s ease"
-          }} 
+                ? "linear-gradient(135deg, rgba(16, 50, 22, 0.55) 0%, rgba(25, 70, 30, 0.45) 100%)" 
+                : "linear-gradient(135deg, rgba(0, 60, 110, 0.55) 0%, rgba(7, 29, 34, 0.50) 100%)",
+            mixBlendMode: "normal",
+            transform: "translateZ(0)",
+            willChange: "background",
+            transition: "background 0.25s cubic-bezier(0.4, 0, 0.2, 1)"
+            }} 
         />
-      </div>
 
-      <div className="container" style={{ position: "relative", zIndex: 1 }}>
+        {/* VINHETA DE CONTRASTE */}
+        <div 
+            style={{ 
+            position: "absolute", 
+            inset: 0, 
+            background: "radial-gradient(circle at center, transparent 40%, rgba(4, 14, 20, 0.5) 100%)",
+            pointerEvents: "none"
+            }} 
+        />
+        </div>
+
+        <div className="container" style={{ position: "relative", zIndex: 1 }}>
         
         {/* CABEÇALHO DA SEÇÃO */}
         <div className="platform-heading" data-reveal style={{ textAlign: "center", marginBottom: "1.5rem" }}>
