@@ -1,7 +1,11 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  reactStrictMode: true,
+const nextConfig = {
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['*.ngrok-free.app', 'localhost:3000'],
+    },
+  },
 };
 
 export default nextConfig;

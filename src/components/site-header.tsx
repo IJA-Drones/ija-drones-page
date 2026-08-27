@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 
-import { Brand } from "@/components/brand";
-import { Icon } from "@/components/icon";
 import { site } from "@/content/site";
 
 export function SiteHeader() {
@@ -13,7 +12,14 @@ export function SiteHeader() {
     <header className="site-header">
       <div className="header-inner">
         <a className="brand-link" href="#inicio" aria-label="IJA Drones, início">
-          <Brand logoOnly />
+          <Image
+            src="/images/logo-ija-sem-fundo.png"
+            alt="IJA Drones - Tecnologia e Inovação"
+            width={100}
+            height={100}
+            priority
+            className="header-logo"
+          />
         </a>
 
         <nav className="desktop-nav" aria-label="Navegação principal">
@@ -25,8 +31,8 @@ export function SiteHeader() {
         </nav>
 
         <a className="header-cta" href="#contato">
-          Solicitar orçamento
-          <Icon name="arrow" />
+          Planejar operação
+          <span aria-hidden="true">↗</span>
         </a>
 
         <button
@@ -52,7 +58,7 @@ export function SiteHeader() {
               </a>
             ))}
             <a className="mobile-menu__cta" href="#contato" onClick={() => setMenuOpen(false)}>
-              Solicitar orçamento
+              Planejar operação
             </a>
           </nav>
         </div>

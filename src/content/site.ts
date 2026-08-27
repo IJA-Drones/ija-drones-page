@@ -2,9 +2,10 @@ export const site = {
   name: "IJA Drones",
   email: "contato@ijadrones.com.br",
   navigation: [
+    { label: "Visão", href: "#visao" },
     { label: "Soluções", href: "#solucoes" },
     { label: "Plataforma", href: "#plataforma" },
-    { label: "Como funciona", href: "#como-funciona" },
+    { label: "Método", href: "#como-funciona" },
     { label: "Contato", href: "#contato" },
   ],
   highlights: [
