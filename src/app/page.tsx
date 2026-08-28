@@ -1,6 +1,7 @@
 import type { CSSProperties } from "react";
 import Image from "next/image";
 
+import { BrazilMap } from "@/components/brazil-map";
 import { ScrollAnimations } from "@/components/scroll-animations";
 import { SiteHeader } from "@/components/site-header";
 import { SystemMockup } from "@/components/system-mockup";
@@ -91,7 +92,7 @@ export default function Home() {
         </section>
 
         {/* INTRO SECTION */}
-        <section className="intro section">
+        <section className="intro section" id="visao">
           <div className="container intro-grid" data-reveal>
             <div><span className="kicker">IJA Drones</span><h2>O voo é só o começo da operação.</h2></div>
             <div className="intro-copy">
@@ -117,6 +118,41 @@ export default function Home() {
                   <ul>{solution.tags.map((tag) => <li key={tag}>{tag}</li>)}</ul>
                 </article>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TECNOLOGIA NACIONAL */}
+        <section className="software-story section" id="tecnologia">
+          <div className="container software-story__grid">
+            <div className="software-story__copy" data-reveal>
+              <span className="kicker">Tecnologia brasileira</span>
+              <h2>Do território ao software. Tudo conectado.</h2>
+              <p>
+                A IJA também desenvolve plataformas próprias para transformar a
+                complexidade das operações em fluxos simples, seguros e rastreáveis.
+                Tecnologia criada no Brasil para conectar equipes, equipamentos,
+                mapas e decisões em um só ambiente.
+              </p>
+
+              <div className="software-story__capabilities">
+                <article>
+                  <span>01</span>
+                  <div><strong>Software próprio</strong><p>Sistemas construídos para a realidade de cada operação.</p></div>
+                </article>
+                <article>
+                  <span>02</span>
+                  <div><strong>Inteligência territorial</strong><p>Mapas e dados organizados para apoiar decisões melhores.</p></div>
+                </article>
+                <article>
+                  <span>03</span>
+                  <div><strong>Gestão integrada</strong><p>Equipes, missões e histórico conectados de ponta a ponta.</p></div>
+                </article>
+              </div>
+            </div>
+
+            <div className="software-story__visual" data-reveal>
+              <BrazilMap />
             </div>
           </div>
         </section>

@@ -3,15 +3,30 @@
 import { useState } from "react";
 import Image from "next/image";
 
+import { NotificationsScreen } from "@/components/system/notifications-screen";
 import { OsHistoryScreen } from "@/components/system/os-history-screen";
+import { agroNavigation, uvisNavigation } from "@/components/system/system-navigation";
+
+const implementedUvisScreens = new Set([
+  "Dashboard",
+  "Histórico OS",
+  "Notificações",
+  "Relatórios",
+  "Agenda",
+]);
 
 export function SystemMockup() {
   // Estado do MODO: 'uvis' (Prefeitura/Urbano) ou 'agro' (Agrícola)
   const [mode, setMode] = useState<"uvis" | "agro">("uvis");
   const isAgro = mode === "agro";
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const accent = isAgro ? "#7f9f55" : "#0088e8";
+  const accentStrong = isAgro ? "#607d3f" : "#0879b9";
+  const accentLight = isAgro ? "#9aaf78" : "#38bdf8";
 
   // Navegação da Sidebar
   const [activeNav, setActiveNav] = useState("Dashboard");
+  const [notificationCount, setNotificationCount] = useState(36);
 
   // Estados interativos do Dashboard
   const [status, setStatus] = useState("Aprovado");
@@ -24,32 +39,7 @@ export function SystemMockup() {
   // Estados dos Relatórios e Agenda
   const [agendaView, setAgendaView] = useState<"Mês" | "Lista">("Mês");
 
-  // Menus da Sidebar conforme o Modo
-  const uvisNav = [
-    { label: "Dashboard", icon: "▦" },
-    { label: "Histórico OS", icon: "🕒" },
-    { label: "Notificações", icon: "🔔", badge: "34" },
-    { label: "Relatórios", icon: "📊" },
-    { label: "Agenda", icon: "📅" },
-    { label: "Usuário", icon: "👤" },
-    { label: "Clientes", icon: "👥" },
-    { label: "Pilotos", icon: "✈️" },
-    { label: "Equipamentos", icon: "⚙️" },
-    { label: "Veículos", icon: "🚚", badge: "2" },
-    { label: "Alertas Limpeza", icon: "💧", badge: "2" },
-    { label: "Mapas", icon: "📍", badge: "LIVE" },
-  ];
-
-  const agroNav = [
-    { label: "Talhões & Lavoura", icon: "🌱" },
-    { label: "Missões Agro", icon: "🛸" },
-    { label: "Relatórios Agro", icon: "📊" },
-    { label: "Telemetria & Frota", icon: "🚜" },
-    { label: "Previsão do Tempo", icon: "🌤️" },
-    { label: "Mapas de Aplicação", icon: "📍", badge: "LIVE" },
-  ];
-
-  const navItems = isAgro ? agroNav : uvisNav;
+  const navItems = isAgro ? agroNavigation : uvisNavigation;
 
   const handleSave = () => {
     setSaved(true);
@@ -104,14 +94,14 @@ export function SystemMockup() {
             }}
         />
         
-        {/* CAMADA DE COR INSTANTÂNEA (AZUL INSTITUCIONAL x VERDE AGRO) */}
+        {/* CAMADA DE COR UNIFICADA DA MARCA */}
         <div 
             style={{ 
             position: "absolute", 
             inset: 0, 
-            background: isAgro 
-                ? "linear-gradient(135deg, rgba(16, 50, 22, 0.55) 0%, rgba(25, 70, 30, 0.45) 100%)" 
-                : "linear-gradient(135deg, rgba(0, 60, 110, 0.55) 0%, rgba(7, 29, 34, 0.50) 100%)",
+            background: isAgro
+              ? "linear-gradient(135deg, rgba(16, 35, 30, 0.72) 0%, rgba(25, 52, 43, 0.58) 100%)"
+              : "linear-gradient(135deg, rgba(7, 38, 57, 0.72) 0%, rgba(8, 59, 91, 0.58) 100%)",
             mixBlendMode: "normal",
             transform: "translateZ(0)",
             willChange: "background",
@@ -137,8 +127,8 @@ export function SystemMockup() {
           <span 
             className="system-pill" 
             style={{ 
-              borderColor: isAgro ? "#8bc53f" : "#0088e8", 
-              color: isAgro ? "#a3e635" : "#38bdf8",
+              borderColor: accent,
+              color: accentLight,
               background: "rgba(255,255,255,0.08)"
             }}
           >
@@ -146,9 +136,9 @@ export function SystemMockup() {
           </span>
           <h2 style={{ color: "#ffffff", marginTop: "0.8rem" }}>
             {isAgro ? (
-              <>Gestão Agrícola de Precisão<br /><span style={{ color: "#a3e635" }}>cada hectare sob controle</span></>
+              <>Gestão Agrícola de Precisão<br /><span style={{ color: accentLight }}>cada hectare sob controle</span></>
             ) : (
-              <>Poder e Controle Operacional<br /><span style={{ color: "#38bdf8" }}>gestão eficiente para prefeituras</span></>
+              <>Poder e Controle Operacional<br /><span style={{ color: accentLight }}>gestão eficiente para prefeituras</span></>
             )}
           </h2>
           <p style={{ color: "rgba(255, 255, 255, 0.8)", maxWidth: "640px", marginInline: "auto" }}>
@@ -180,13 +170,13 @@ export function SystemMockup() {
                 padding: "9px 24px",
                 borderRadius: "30px",
                 border: "none",
-                background: !isAgro ? "#0088e8" : "transparent",
+                background: !isAgro ? accentStrong : "transparent",
                 color: "#ffffff",
                 fontWeight: "700",
                 fontSize: "0.85rem",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
-                boxShadow: !isAgro ? "0 4px 14px rgba(0, 136, 232, 0.4)" : "none"
+                boxShadow: "none"
               }}
             >
               Prefeitura (UVIS)
@@ -202,13 +192,13 @@ export function SystemMockup() {
                 padding: "9px 24px",
                 borderRadius: "30px",
                 border: "none",
-                background: isAgro ? "#8bc53f" : "transparent",
+                background: isAgro ? accentStrong : "transparent",
                 color: "#ffffff",
                 fontWeight: "700",
                 fontSize: "0.85rem",
                 cursor: "pointer",
                 transition: "all 0.3s ease",
-                boxShadow: isAgro ? "0 4px 14px rgba(139, 197, 63, 0.4)" : "none"
+                boxShadow: "none"
               }}
             >
                 Agro
@@ -217,54 +207,67 @@ export function SystemMockup() {
         </div>
 
         {/* CENTRO DA TELA: MOCKUP INTERATIVO */}
-        <div className="system-mockup" data-reveal aria-label="Demonstração do painel">
-          <div className="dashboard-glow" aria-hidden="true" style={{ background: isAgro ? "radial-gradient(circle, rgba(139,197,63,0.3), transparent 60%)" : "radial-gradient(circle, rgba(0,136,232,0.3), transparent 60%)" }} />
+        <div className="system-mockup" data-system-theme={isAgro ? "agro" : "uvis"} data-reveal aria-label="Demonstração do painel">
+          <div
+            className="dashboard-glow"
+            aria-hidden="true"
+            style={{
+              background: isAgro
+                ? "radial-gradient(circle, rgba(127,159,85,0.22), transparent 60%)"
+                : "radial-gradient(circle, rgba(0,136,232,0.2), transparent 60%)",
+            }}
+          />
           
-          <div className="system-window" style={{ background: "#f8fafc", color: "#0f172a" }}>
-            {!isAgro && activeNav === "Histórico OS" ? (
-              <OsHistoryScreen onNavigate={setActiveNav} />
-            ) : (
-              <>
-                {/* BROWSERBAR */}
-                <div className="system-browserbar">
-              <div className="browser-dots" aria-hidden="true"><i /><i /><i /></div>
-              <div className="browser-address">
-                <span aria-hidden="true">⌕</span> app.ijasystem.com.br/{isAgro ? "agro" : "uvis"}/{activeNav.toLowerCase()}
-              </div>
-              <div className="system-profile">
-                <span aria-hidden="true">●</span>
-                <b>{isAgro ? "GESTOR AGRO" : "ADMIN PREFEITURA"}</b>
-                <i aria-hidden="true">⌄</i>
-              </div>
-                </div>
+          <div className="system-window" data-system-theme={isAgro ? "agro" : "uvis"} style={{ background: "#f8fafc", color: "#0f172a" }}>
+            <header className="system-browserbar mockup-topbar">
+              <div className="mockup-topbar__identity">
+                <button
+                  className="mockup-menu-button"
+                  type="button"
+                  aria-label={sidebarCollapsed ? "Expandir menu" : "Recolher menu"}
+                  onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+                >
+                  <span /><span /><span />
+                </button>
 
-                <div className="system-shell">
+                <div className={`mockup-brand ${isAgro ? "mockup-brand--agro" : "mockup-brand--ocean"}`} aria-label={isAgro ? "IJA System Agro" : "OceanoAzul"}>
+                  <span className="mockup-brand__mark">{isAgro ? "IJA" : "OA"}</span>
+                  <strong>{isAgro ? <>IJA System<small>AGRO</small></> : "OceanoAzul"}</strong>
+                </div>
+              </div>
+
+              <button className="system-profile mockup-profile" type="button" aria-label={isAgro ? "Perfil do gestor Agro" : "Perfil da Prefeitura"}>
+                <span aria-hidden="true">●</span>
+                <i aria-hidden="true">⌄</i>
+              </button>
+            </header>
+
+            <div className={`system-shell mockup-shell ${sidebarCollapsed ? "is-sidebar-collapsed" : ""}`}>
               {/* SIDEBAR */}
-              <aside className="system-sidebar">
+              <aside className="system-sidebar mockup-sidebar">
                 <div>
-                  <div className="system-logo">
-                    <span className="system-logo__mark" aria-hidden="true" style={{ color: isAgro ? "#8bc53f" : "#0088e8" }}>✦</span>
-                    <strong>IJA System <small style={{ color: isAgro ? "#8bc53f" : "#0088e8" }}>{isAgro ? "AGRO" : "UVIS"}</small></strong>
-                  </div>
-                  <nav aria-label="Menu do sistema">
+                  <nav className="mockup-nav" aria-label="Menu do sistema">
                     {navItems.map((item) => (
-                      <span
+                      <button
+                        type="button"
                         key={item.label}
-                        className={activeNav === item.label ? "is-active" : ""}
+                        className={`mockup-nav__item ${activeNav === item.label ? "is-active" : ""}`}
+                        aria-current={activeNav === item.label ? "page" : undefined}
+                        title={sidebarCollapsed ? item.label : undefined}
                         onClick={() => setActiveNav(item.label)}
-                        style={{ cursor: "pointer" }}
                       >
-                        <i aria-hidden="true">{item.icon}</i> {item.label}
+                        <i className="mockup-nav__icon" aria-hidden="true">{item.icon}</i>
+                        <span className="mockup-nav__label">{item.label}</span>
                         {item.badge && (
-                          <small style={{ marginLeft: "auto", background: item.badge === "LIVE" ? "#ef4444" : (isAgro ? "#8bc53f" : "#0088e8"), color: "#fff" }}>
-                            {item.badge}
+                          <small className={item.badge === "LIVE" ? "is-live" : ""}>
+                            {item.badge === "notifications" ? notificationCount : item.badge}
                           </small>
                         )}
-                      </span>
+                      </button>
                     ))}
                   </nav>
                 </div>
-                <div className="system-operator">
+                <div className="system-operator mockup-operator">
                   <span>PH</span>
                   <p><strong>Pedro H.</strong><small>{isAgro ? "Engenheiro Agrônomo" : "Administrador"}</small></p>
                 </div>
@@ -272,6 +275,14 @@ export function SystemMockup() {
 
               {/* CONTEÚDO PRINCIPAL DO MOCKUP */}
               <div className="system-content">
+                {!isAgro && activeNav === "Histórico OS" ? <OsHistoryScreen onNavigate={setActiveNav} /> : null}
+                {!isAgro && activeNav === "Notificações" ? (
+                  <NotificationsScreen
+                    notificationCount={notificationCount}
+                    onNavigate={setActiveNav}
+                    onNotificationCountChange={setNotificationCount}
+                  />
+                ) : null}
                 
                 {/* MODO PREFEITURA (UVIS) - DASHBOARD */}
                 {!isAgro && activeNav === "Dashboard" && (
@@ -348,7 +359,7 @@ export function SystemMockup() {
                         <button 
                           type="button" 
                           onClick={handleSave}
-                          style={{ marginTop: "8px", padding: "6px", borderRadius: "4px", background: saved ? "#10b981" : "#0088e8", color: "#fff", border: "none", cursor: "pointer" }}
+                          style={{ marginTop: "8px", padding: "6px", borderRadius: "4px", background: saved ? "#6f8f54" : accentStrong, color: "#fff", border: "none", cursor: "pointer" }}
                         >
                           {saved ? "Salvo!" : "Salvar"}
                         </button>
@@ -373,11 +384,11 @@ export function SystemMockup() {
                     <div className="system-section-title">Dados de Agosto / 2026</div>
                     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "0.5rem" }}>
                       {[
-                        { label: "TOTAL", val: "1332", color: "#0088e8" },
+                        { label: "TOTAL", val: "1332", color: accentStrong },
                         { label: "PENDENTES", val: "13", color: "#64748b" },
-                        { label: "APROVADAS", val: "207", color: "#10b981" },
-                        { label: "CONCLUÍDAS", val: "827", color: "#a855f7" },
-                        { label: "RECUSADAS", val: "256", color: "#ef4444" },
+                        { label: "APROVADAS", val: "207", color: "#6f8f54" },
+                        { label: "CONCLUÍDAS", val: "827", color: accentLight },
+                        { label: "RECUSADAS", val: "256", color: "#b85c50" },
                       ].map((card) => (
                         <div key={card.label} style={{ background: "rgba(0,0,0,0.03)", padding: "0.6rem", borderRadius: "6px", borderLeft: `3px solid ${card.color}` }}>
                           <span style={{ fontSize: "0.6rem", opacity: 0.8 }}>{card.label}</span>
@@ -406,9 +417,9 @@ export function SystemMockup() {
                         {[2, 3, 4, 5, 6, 7, 8].map((day) => (
                           <div key={day} style={{ background: "#f8fafc", minHeight: "65px", padding: "4px", borderRadius: "4px", border: "1px solid #f1f5f9" }}>
                             <span style={{ fontSize: "0.65rem", fontWeight: "bold" }}>{day}</span>
-                            {day === 3 && <div style={{ background: "#3b82f6", color: "#fff", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Av. Angelina</div>}
-                            {day === 4 && <div style={{ background: "#93c5fd", color: "#000", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Rua Cachoeira</div>}
-                            {day === 5 && <div style={{ background: "#f97316", color: "#fff", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Rua Hipólito</div>}
+                            {day === 3 && <div style={{ background: accentStrong, color: "#fff", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Av. Angelina</div>}
+                            {day === 4 && <div style={{ background: accentLight, color: "#10231e", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Rua Cachoeira</div>}
+                            {day === 5 && <div style={{ background: "#0b2d42", color: "#fff", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Rua Hipólito</div>}
                           </div>
                         ))}
                       </div>
@@ -420,10 +431,10 @@ export function SystemMockup() {
                 {isAgro && (
                   <div>
                     <header className="system-content__header">
-                      <div><small>Agricultura de Precisão</small><h3>Monitoramento por Talhão</h3></div>
+                      <div><small>Agricultura de Precisão</small><h3>{activeNav}</h3></div>
                       <div className="system-actions">
-                        <span style={{ background: "rgba(139,197,63,0.15)", color: "#5d8f20", border: "1px solid #8bc53f" }}>Exportar NDVI</span>
-                        <b style={{ background: "#8bc53f", color: "#fff" }}>Novo Voo Agro</b>
+                        <span style={{ background: "rgba(127,159,85,0.15)", color: accentStrong, border: `1px solid ${accent}` }}>Exportar NDVI</span>
+                        <b style={{ background: accentStrong, color: "#fff" }}>Novo Voo Agro</b>
                       </div>
                     </header>
 
@@ -458,7 +469,7 @@ export function SystemMockup() {
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem", borderBottom: "1px solid #f1f5f9", paddingBottom: "4px" }}>
                             <span>🛸 Drone Mapeamento RTK</span>
-                            <strong style={{ color: "#0088e8" }}>Standby</strong>
+                            <strong style={{ color: accentStrong }}>Standby</strong>
                           </div>
                           <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.75rem" }}>
                             <span>🚜 Gerador & Base Móvel</span>
@@ -476,25 +487,30 @@ export function SystemMockup() {
                   </div>
                 )}
 
-                  </div>
-                </div>
-              </>
-            )}
+                {!isAgro && !implementedUvisScreens.has(activeNav) ? (
+                  <section className="system-placeholder" aria-labelledby="system-placeholder-title">
+                    <span aria-hidden="true">{navItems.find((item) => item.label === activeNav)?.icon ?? "◇"}</span>
+                    <small>Módulo OceanoAzul</small>
+                    <h3 id="system-placeholder-title">{activeNav}</h3>
+                    <p>Este módulo mantém a mesma navegação e a mesma identidade visual da dashboard. Somente o conteúdo operacional desta área é alterado.</p>
+                    <button type="button" onClick={() => setActiveNav("Dashboard")}>Voltar ao dashboard</button>
+                  </section>
+                ) : null}
+              </div>
+            </div>
           </div>
 
-          {isAgro || activeNav !== "Histórico OS" ? (
-            <div className="system-online">
-              <i style={{ background: isAgro ? "#8bc53f" : "#0088e8" }} />
-              Sistema online <strong>Operação {isAgro ? "Agrícola" : "UVIS"} sincronizada</strong>
-            </div>
-          ) : null}
+          <div className="system-online" style={{ color: accentStrong }}>
+            <i style={{ background: accent }} />
+            Sistema online <strong>Operação {isAgro ? "Agrícola" : "UVIS"} sincronizada</strong>
+          </div>
         </div>
 
         <div className="platform-cta" data-reveal style={{ textAlign: "center", marginTop: "2.5rem" }}>
           <p style={{ color: "#ffffff" }}>
             <strong>Gestão simples, decisão rápida.</strong> Conheça a plataforma que conecta sua equipe, seus equipamentos e cada missão.
           </p>
-          <a className="button button--ink" href="#contato" style={{ background: isAgro ? "#8bc53f" : "#0088e8", color: "#fff" }}>
+          <a className="button button--ink" href="#contato" style={{ background: accentStrong, color: "#fff" }}>
             Solicitar demonstração <span aria-hidden="true">↗</span>
           </a>
         </div>

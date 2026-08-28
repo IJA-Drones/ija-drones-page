@@ -2,6 +2,8 @@
 
 import { useState, type ReactNode } from "react";
 
+import { uvisNavigation } from "@/components/system/system-navigation";
+
 type OaSystemShellProps = {
   activeScreen: string;
   notificationCount?: number;
@@ -9,31 +11,6 @@ type OaSystemShellProps = {
   children: ReactNode;
   overlay?: ReactNode;
 };
-
-type NavigationItem = {
-  label: string;
-  icon: string;
-  badge?: string;
-  expandable?: boolean;
-};
-
-const navigation: readonly NavigationItem[] = [
-  { label: "Dashboard", icon: "▦" },
-  { label: "Histórico OS", icon: "◷" },
-  { label: "Notificações", icon: "♟", badge: "notifications" },
-  { label: "Relatórios", icon: "▥" },
-  { label: "Agenda", icon: "▣" },
-  { label: "Usuário", icon: "♟", expandable: true },
-  { label: "Clientes", icon: "♟" },
-  { label: "Pilotos", icon: "▣", expandable: true },
-  { label: "Equipamentos", icon: "⚙" },
-  { label: "Veículos", icon: "▰", badge: "2" },
-  { label: "Alertas Limpeza", icon: "♢", badge: "2" },
-  { label: "Equipe OA", icon: "♟", expandable: true },
-  { label: "Equipe UVIS", icon: "▣", expandable: true },
-  { label: "Mapas", icon: "⌖", badge: "LIVE" },
-  { label: "Geolocalização", icon: "⌕" },
-];
 
 export function OaSystemShell({
   activeScreen,
@@ -46,65 +23,74 @@ export function OaSystemShell({
   const [profileOpen, setProfileOpen] = useState(false);
 
   return (
-    <div className={`os-history oa-system-shell ${sidebarCollapsed ? "is-sidebar-collapsed" : ""}`}>
-      <header className="os-history__topbar">
-        <button
-          className="os-menu-button"
-          type="button"
-          aria-label={sidebarCollapsed ? "Expandir menu" : "Recolher menu"}
-          onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
-        >
-          <span /><span /><span />
-        </button>
+    <div className={`os-history oa-system-shell ${sidebarCollapsed ? "is-sidebar-collapsed" : ""}`} data-system-theme="uvis">
+      <header className="os-history__topbar mockup-topbar">
+        <div className="mockup-topbar__identity">
+          <button
+            className="os-menu-button mockup-menu-button"
+            type="button"
+            aria-label={sidebarCollapsed ? "Expandir menu" : "Recolher menu"}
+            onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+          >
+            <span /><span /><span />
+          </button>
 
-        <div className="oa-wordmark" aria-label="Oceano Azul">
-          <span className="oa-wordmark__mark">OA</span>
-          <strong>OceanoAzul</strong>
+          <div className="oa-wordmark mockup-brand" aria-label="IJA System UVIS">
+            <span className="oa-wordmark__mark mockup-brand__mark">IJA</span>
+            <strong>IJA System<small>UVIS</small></strong>
+          </div>
+        </div>
+
+        <div className="browser-address mockup-address">
+          <span aria-hidden="true">⌕</span> app.ijasystem.com.br/uvis/{activeScreen.toLocaleLowerCase("pt-BR").replaceAll(" ", "-")}
         </div>
 
         <div className="os-profile-wrap">
           <button
-            className="os-profile-button"
+            className="os-profile-button mockup-profile"
             type="button"
             aria-label="Abrir menu do perfil"
             aria-expanded={profileOpen}
             onClick={() => setProfileOpen((open) => !open)}
           >
-            <span aria-hidden="true">●</span><i aria-hidden="true">⌄</i>
+            <span aria-hidden="true">PH</span><b>ADMIN PREFEITURA</b><i aria-hidden="true">⌄</i>
           </button>
           {profileOpen ? (
             <div className="os-profile-menu">
               <strong>ADMIN</strong>
-              <small>Oceano Azul</small>
+              <small>IJA System UVIS</small>
               <button type="button" onClick={() => onNavigate("Usuário")}>Meu perfil</button>
             </div>
           ) : null}
         </div>
       </header>
 
-      <div className="os-history__layout">
-        <aside className="os-history__sidebar">
-          <nav aria-label="Navegação do IJA System">
-            {navigation.map((item) => {
+      <div className="os-history__layout mockup-shell">
+        <aside className="os-history__sidebar mockup-sidebar">
+          <nav className="mockup-nav" aria-label="Navegação do IJA System">
+            {uvisNavigation.map((item) => {
               const badge = item.badge === "notifications" ? String(notificationCount) : item.badge;
 
               return (
                 <button
                   key={item.label}
                   type="button"
-                  className={item.label === activeScreen ? "is-active" : ""}
+                  className={`mockup-nav__item ${item.label === activeScreen ? "is-active" : ""}`}
                   aria-current={item.label === activeScreen ? "page" : undefined}
                   title={sidebarCollapsed ? item.label : undefined}
                   onClick={() => item.label !== activeScreen && onNavigate(item.label)}
                 >
-                  <span className="os-nav-icon" aria-hidden="true">{item.icon}</span>
-                  <span className="os-nav-label">{item.label}</span>
-                  {item.expandable ? <i className="os-nav-chevron" aria-hidden="true">⌄</i> : null}
+                  <span className="os-nav-icon mockup-nav__icon" aria-hidden="true">{item.icon}</span>
+                  <span className="os-nav-label mockup-nav__label">{item.label}</span>
                   {badge ? <small className={badge === "LIVE" ? "is-live" : ""}>{badge}</small> : null}
                 </button>
               );
             })}
           </nav>
+          <div className="system-operator mockup-operator">
+            <span>PH</span>
+            <p><strong>Pedro H.</strong><small>Administrador</small></p>
+          </div>
         </aside>
 
         <main className="os-history__main">{children}</main>

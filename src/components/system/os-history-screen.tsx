@@ -2,8 +2,6 @@
 
 import { useMemo, useState } from "react";
 
-import { OaSystemShell } from "@/components/system/oa-system-shell";
-
 type OsHistoryScreenProps = {
   onNavigate: (screen: string) => void;
 };
@@ -136,12 +134,12 @@ export function OsHistoryScreen({ onNavigate }: OsHistoryScreenProps) {
   );
 
   return (
-    <OaSystemShell activeScreen="Histórico OS" onNavigate={onNavigate} overlay={overlay}>
+    <section className="system-screen system-screen--history" aria-labelledby="os-history-title">
           <div className="os-history__heading">
             <div className="os-history__title">
               <span aria-hidden="true">◷</span>
               <div>
-                <h3>Histórico de OS</h3>
+                <h3 id="os-history-title">Histórico de OS</h3>
                 <p>Consulte o histórico das ordens de serviço.</p>
                 <small>OS filtradas: <b>{filteredOrders.length === serviceOrders.length ? "4184" : filteredOrders.length}</b></small>
               </div>
@@ -199,6 +197,7 @@ export function OsHistoryScreen({ onNavigate }: OsHistoryScreenProps) {
             </table>
             {filteredOrders.length === 0 ? <p className="os-empty">Nenhuma ordem de serviço encontrada.</p> : null}
           </div>
-    </OaSystemShell>
+          {overlay}
+    </section>
   );
 }
