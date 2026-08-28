@@ -2,6 +2,8 @@
 
 import { useState, type Dispatch, type SetStateAction } from "react";
 
+import { SystemPageTitle } from "@/components/system/system-page-title";
+
 type NotificationsScreenProps = {
   onNavigate: (screen: string) => void;
   notificationCount: number;
@@ -99,9 +101,9 @@ export function NotificationsScreen({
 
   return (
     <section className="system-screen system-screen--notifications" aria-labelledby="notifications-title">
-      <div className="notifications-heading">
-        <div><span aria-hidden="true">♟</span><h3 id="notifications-title">Notificações</h3><small>{notificationCount} alertas</small></div>
-        <button type="button" disabled={notifications.length === 0} onClick={() => setConfirmClear(true)}>♲ <span>Limpar todas</span></button>
+      <div className="notifications-heading system-page-header">
+        <SystemPageTitle icon="◆" id="notifications-title" title="Notificações" meta={<><strong>{notificationCount}</strong> alertas</>} />
+        <button className="is-danger" type="button" disabled={notifications.length === 0} onClick={() => setConfirmClear(true)}>♲ <span>Limpar todas</span></button>
       </div>
 
       <section className="notifications-panel" aria-label="Lista de notificações">

@@ -15,11 +15,7 @@ export const uvisNavigation: readonly SystemNavigationItem[] = [
   { label: "Pilotos", icon: "✈" },
   { label: "Equipamentos", icon: "⚙" },
   { label: "Veículos", icon: "▰", badge: "2" },
-  { label: "Alertas Limpeza", icon: "◇", badge: "2" },
-  { label: "Equipe OA", icon: "◉" },
-  { label: "Equipe UVIS", icon: "▣" },
   { label: "Mapas", icon: "⌖", badge: "LIVE" },
-  { label: "Geolocalização", icon: "⌕" },
 ];
 
 export const agroNavigation: readonly SystemNavigationItem[] = [

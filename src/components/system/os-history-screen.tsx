@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 
+import { SystemPageTitle } from "@/components/system/system-page-title";
+
 type OsHistoryScreenProps = {
   onNavigate: (screen: string) => void;
 };
@@ -135,15 +137,8 @@ export function OsHistoryScreen({ onNavigate }: OsHistoryScreenProps) {
 
   return (
     <section className="system-screen system-screen--history" aria-labelledby="os-history-title">
-          <div className="os-history__heading">
-            <div className="os-history__title">
-              <span aria-hidden="true">◷</span>
-              <div>
-                <h3 id="os-history-title">Histórico de OS</h3>
-                <p>Consulte o histórico das ordens de serviço.</p>
-                <small>OS filtradas: <b>{filteredOrders.length === serviceOrders.length ? "4184" : filteredOrders.length}</b></small>
-              </div>
-            </div>
+          <div className="os-history__heading system-page-header">
+            <SystemPageTitle icon="◷" id="os-history-title" title="Histórico de OS" description="Consulte o histórico das ordens de serviço." meta={<>OS filtradas: <strong>{filteredOrders.length === serviceOrders.length ? "4184" : filteredOrders.length}</strong></>} />
 
             <div className="os-export-actions">
               <button className="is-primary" type="button" onClick={() => showFeedback("Filtro exportado em Excel")}>▣ <span>Exportar filtro</span></button>

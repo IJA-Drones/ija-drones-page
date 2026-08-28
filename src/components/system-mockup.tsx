@@ -3,9 +3,14 @@
 import { useState } from "react";
 import Image from "next/image";
 
+import { AgendaScreen } from "@/components/system/agenda-screen";
+import { ManagementDashboardScreen } from "@/components/system/management-dashboard-screen";
 import { NotificationsScreen } from "@/components/system/notifications-screen";
 import { OsHistoryScreen } from "@/components/system/os-history-screen";
+import { ReportsScreen } from "@/components/system/reports-screen";
+import { SystemModuleScreen } from "@/components/system/system-module-screen";
 import { agroNavigation, uvisNavigation } from "@/components/system/system-navigation";
+import { SystemPageTitle } from "@/components/system/system-page-title";
 
 const implementedUvisScreens = new Set([
   "Dashboard",
@@ -28,23 +33,7 @@ export function SystemMockup() {
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [notificationCount, setNotificationCount] = useState(36);
 
-  // Estados interativos do Dashboard
-  const [status, setStatus] = useState("Aprovado");
-  const [piloto, setPiloto] = useState("Piloto 1 (LESTE)");
-  const [titulo, setTitulo] = useState("UVIS Teste QA");
-  const [tipo, setTipo] = useState("Culex");
-  const [foco, setFoco] = useState("Imóvel Abandonado");
-  const [saved, setSaved] = useState(false);
-
-  // Estados dos Relatórios e Agenda
-  const [agendaView, setAgendaView] = useState<"Mês" | "Lista">("Mês");
-
   const navItems = isAgro ? agroNavigation : uvisNavigation;
-
-  const handleSave = () => {
-    setSaved(true);
-    setTimeout(() => setSaved(false), 2500);
-  };
 
   return (
     <section 
@@ -284,157 +273,20 @@ export function SystemMockup() {
                   />
                 ) : null}
                 
-                {/* MODO PREFEITURA (UVIS) - DASHBOARD */}
-                {!isAgro && activeNav === "Dashboard" && (
-                  <>
-                    <header className="system-content__header">
-                      <div><small>Visão Geral Prefeitura</small><h3>Painel de Ocorrências UVIS</h3></div>
-                      <div className="system-actions"><span>Filtros</span><b>Exportar OS</b></div>
-                    </header>
+                {!isAgro && activeNav === "Dashboard" ? <ManagementDashboardScreen /> : null}
 
-                    <div className="system-section-title"><span aria-hidden="true">◇</span> Detalhes da Solicitação Urbana</div>
+                {!isAgro && activeNav === "Relatórios" ? <ReportsScreen /> : null}
 
-                    <article className="occurrence-card">
-                      <div className="occurrence-summary">
-                        <input 
-                          type="text" 
-                          value={titulo} 
-                          onChange={(e) => setTitulo(e.target.value)}
-                          style={{ background: "transparent", border: "none", fontWeight: "bold", fontSize: "1rem", color: "inherit", width: "100%" }}
-                        />
-                        <div className="occurrence-tags">
-                          <span style={{ background: status === "Aprovado" ? "#10b98122" : "#f59e0b22", color: status === "Aprovado" ? "#10b981" : "#f59e0b" }}>
-                            {status}
-                          </span>
-                          <span>Setor Sul</span>
-                        </div>
-                        <dl>
-                          <div><dt aria-hidden="true">◷</dt><dd>08/01/2026 às 13:00</dd></div>
-                          <div><dt aria-hidden="true">⌖</dt><dd>Av. Paulista, 09 — Bela Vista<small>CEP: 01310-930</small></dd></div>
-                        </dl>
-                      </div>
-
-                      <div className="occurrence-location">
-                        <div className="coordinate">-23.55819, -46.65984 <span aria-hidden="true">⌖</span></div>
-                        <dl>
-                          <dt>Tipo:</dt>
-                          <dd>
-                            <select value={tipo} onChange={(e) => setTipo(e.target.value)} style={{ background: "transparent", border: "none", color: "inherit" }}>
-                              <option value="Culex">Culex</option>
-                              <option value="Aedes aegypti">Aedes aegypti</option>
-                            </select>
-                          </dd>
-                          <dt>Foco:</dt>
-                          <dd>
-                            <select value={foco} onChange={(e) => setFoco(e.target.value)} style={{ background: "transparent", border: "none", color: "inherit" }}>
-                              <option value="Imóvel Abandonado">Imóvel Abandonado</option>
-                              <option value="Terreno Baldio">Terreno Baldio</option>
-                            </select>
-                          </dd>
-                        </dl>
-                      </div>
-
-                      <div className="occurrence-status">
-                        <label>Status</label>
-                        <select 
-                          value={status} 
-                          onChange={(e) => setStatus(e.target.value)}
-                          style={{ width: "100%", padding: "4px", borderRadius: "4px", background: "rgba(255,255,255,0.1)", color: "inherit" }}
-                        >
-                          <option value="Aprovado">Aprovar</option>
-                          <option value="Pendente">Pendente</option>
-                          <option value="Em análise">Em análise</option>
-                        </select>
-
-                        <label style={{ marginTop: "6px" }}>Piloto responsável</label>
-                        <select 
-                          value={piloto} 
-                          onChange={(e) => setPiloto(e.target.value)}
-                          style={{ width: "100%", padding: "4px", borderRadius: "4px", background: "rgba(255,255,255,0.1)", color: "inherit" }}
-                        >
-                          <option value="Piloto 1 (LESTE)">Piloto 1 (LESTE)</option>
-                          <option value="Piloto 2 (SUL)">Piloto 2 (SUL)</option>
-                        </select>
-
-                        <button 
-                          type="button" 
-                          onClick={handleSave}
-                          style={{ marginTop: "8px", padding: "6px", borderRadius: "4px", background: saved ? "#6f8f54" : accentStrong, color: "#fff", border: "none", cursor: "pointer" }}
-                        >
-                          {saved ? "Salvo!" : "Salvar"}
-                        </button>
-                      </div>
-                    </article>
-
-                    <div className="system-stats">
-                      <div><span>Ocorrências hoje</span><strong>18</strong><i>+4 desde ontem</i></div>
-                      <div><span>Em análise</span><strong>07</strong><i>Equipe conectada</i></div>
-                      <div><span>Operações aprovadas</span><strong>42</strong><i>Este mês</i></div>
-                    </div>
-                  </>
-                )}
-
-                {/* MODO PREFEITURA (UVIS) - RELATÓRIOS E AGENDA */}
-                {!isAgro && activeNav === "Relatórios" && (
-                  <div>
-                    <header className="system-content__header">
-                      <div><small>Relatórios de Gestão Pública</small><h3>Solicitações filtradas: 1332</h3></div>
-                      <div className="system-actions"><span>Relatório OS</span><b>Exportar PDF</b></div>
-                    </header>
-                    <div className="system-section-title">Dados de Agosto / 2026</div>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: "0.5rem" }}>
-                      {[
-                        { label: "TOTAL", val: "1332", color: accentStrong },
-                        { label: "PENDENTES", val: "13", color: "#64748b" },
-                        { label: "APROVADAS", val: "207", color: "#6f8f54" },
-                        { label: "CONCLUÍDAS", val: "827", color: accentLight },
-                        { label: "RECUSADAS", val: "256", color: "#b85c50" },
-                      ].map((card) => (
-                        <div key={card.label} style={{ background: "rgba(0,0,0,0.03)", padding: "0.6rem", borderRadius: "6px", borderLeft: `3px solid ${card.color}` }}>
-                          <span style={{ fontSize: "0.6rem", opacity: 0.8 }}>{card.label}</span>
-                          <div style={{ fontSize: "1.2rem", fontWeight: "bold", color: card.color }}>{card.val}</div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {!isAgro && activeNav === "Agenda" && (
-                  <div>
-                    <header className="system-content__header">
-                      <div><small>Agendamentos de Aplicação</small><h3>agosto de 2026</h3></div>
-                      <div className="system-actions">
-                        <span onClick={() => setAgendaView(agendaView === "Mês" ? "Lista" : "Mês")} style={{ cursor: "pointer" }}>Visão: {agendaView}</span>
-                        <b>Rota do Dia</b>
-                      </div>
-                    </header>
-
-                    <div style={{ background: "#fff", borderRadius: "8px", padding: "0.8rem", border: "1px solid #e2e8f0" }}>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", textTransform: "uppercase", fontSize: "0.6rem", fontWeight: "bold", opacity: 0.6, marginBottom: "0.5rem", textAlign: "center" }}>
-                        <span>DOM</span><span>SEG</span><span>TER</span><span>QUA</span><span>QUI</span><span>SEX</span><span>SÁB</span>
-                      </div>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: "4px" }}>
-                        {[2, 3, 4, 5, 6, 7, 8].map((day) => (
-                          <div key={day} style={{ background: "#f8fafc", minHeight: "65px", padding: "4px", borderRadius: "4px", border: "1px solid #f1f5f9" }}>
-                            <span style={{ fontSize: "0.65rem", fontWeight: "bold" }}>{day}</span>
-                            {day === 3 && <div style={{ background: accentStrong, color: "#fff", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Av. Angelina</div>}
-                            {day === 4 && <div style={{ background: accentLight, color: "#10231e", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Rua Cachoeira</div>}
-                            {day === 5 && <div style={{ background: "#0b2d42", color: "#fff", fontSize: "0.45rem", padding: "2px", borderRadius: "2px", marginTop: "2px" }}>Rua Hipólito</div>}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                )}
+                {!isAgro && activeNav === "Agenda" ? <AgendaScreen /> : null}
 
                 {/* MODO AGRO - TALHÕES E LAVOURA */}
-                {isAgro && (
+                {isAgro && activeNav === "Talhões & Lavoura" && (
                   <div>
-                    <header className="system-content__header">
-                      <div><small>Agricultura de Precisão</small><h3>{activeNav}</h3></div>
+                    <header className="system-content__header system-page-header">
+                      <SystemPageTitle icon="◇" id="agro-fields-title" eyebrow="Agricultura de Precisão" title={activeNav} />
                       <div className="system-actions">
-                        <span style={{ background: "rgba(127,159,85,0.15)", color: accentStrong, border: `1px solid ${accent}` }}>Exportar NDVI</span>
-                        <b style={{ background: accentStrong, color: "#fff" }}>Novo Voo Agro</b>
+                        <button type="button">▤ Exportar NDVI</button>
+                        <button className="is-primary" type="button">＋ Novo Voo Agro</button>
                       </div>
                     </header>
 
@@ -488,13 +340,11 @@ export function SystemMockup() {
                 )}
 
                 {!isAgro && !implementedUvisScreens.has(activeNav) ? (
-                  <section className="system-placeholder" aria-labelledby="system-placeholder-title">
-                    <span aria-hidden="true">{navItems.find((item) => item.label === activeNav)?.icon ?? "◇"}</span>
-                    <small>Módulo OceanoAzul</small>
-                    <h3 id="system-placeholder-title">{activeNav}</h3>
-                    <p>Este módulo mantém a mesma navegação e a mesma identidade visual da dashboard. Somente o conteúdo operacional desta área é alterado.</p>
-                    <button type="button" onClick={() => setActiveNav("Dashboard")}>Voltar ao dashboard</button>
-                  </section>
+                  <SystemModuleScreen key={`uvis-${activeNav}`} mode="uvis" screen={activeNav} />
+                ) : null}
+
+                {isAgro && activeNav !== "Talhões & Lavoura" ? (
+                  <SystemModuleScreen key={`agro-${activeNav}`} mode="agro" screen={activeNav} />
                 ) : null}
               </div>
             </div>
@@ -506,13 +356,26 @@ export function SystemMockup() {
           </div>
         </div>
 
-        <div className="platform-cta" data-reveal style={{ textAlign: "center", marginTop: "2.5rem" }}>
-          <p style={{ color: "#ffffff" }}>
-            <strong>Gestão simples, decisão rápida.</strong> Conheça a plataforma que conecta sua equipe, seus equipamentos e cada missão.
-          </p>
-          <a className="button button--ink" href="#contato" style={{ background: accentStrong, color: "#fff" }}>
-            Solicitar demonstração <span aria-hidden="true">↗</span>
-          </a>
+        <div className="platform-cta" data-cta-theme={isAgro ? "agro" : "uvis"} data-reveal>
+          <div className="platform-cta__copy">
+            <span className="platform-cta__eyebrow"><i aria-hidden="true" /> Ecossistema de gestão operacional</span>
+            <p>
+              <strong>Gestão simples.<br />Decisão rápida.</strong>
+              <span>Uma plataforma que conecta equipes, equipamentos e cada etapa da missão em uma única visão.</span>
+            </p>
+          </div>
+
+          <div className="platform-cta__highlights" aria-label="Benefícios da plataforma">
+            <span><i aria-hidden="true">01</i> Operação centralizada</span>
+            <span><i aria-hidden="true">02</i> Dados em tempo real</span>
+          </div>
+
+          <div className="platform-cta__action">
+            <small>Demonstração personalizada para sua operação</small>
+            <a className="button platform-cta__button" href="#contato">
+              Solicitar demonstração <span aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
