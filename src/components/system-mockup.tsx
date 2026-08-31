@@ -1,9 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 import { AgendaScreen } from "@/components/system/agenda-screen";
+import { AgroDashboardScreen } from "@/components/system/agro-dashboard-screen";
+import { isAgroView } from "@/components/system/agro-dashboard-data";
+import { ClientsScreen } from "@/components/system/clients-screen";
+import { UsersScreen } from "@/components/system/users-screen";
+import { PilotsScreen } from "@/components/system/pilots-screen";
+import { EquipmentScreen } from "@/components/system/equipment-screen";
+import { VehiclesScreen } from "@/components/system/vehicles-screen";
+import { MapsScreen } from "@/components/system/maps-screen";
 import { ManagementDashboardScreen } from "@/components/system/management-dashboard-screen";
 import { NotificationsScreen } from "@/components/system/notifications-screen";
 import { OsHistoryScreen } from "@/components/system/os-history-screen";
@@ -18,6 +26,12 @@ const implementedUvisScreens = new Set([
   "Notificações",
   "Relatórios",
   "Agenda",
+  "Clientes",
+  "Usuário",
+  "Pilotos",
+  "Equipamentos",
+  "Veículos",
+  "Mapas",
 ]);
 
 export function SystemMockup() {
@@ -25,6 +39,9 @@ export function SystemMockup() {
   const [mode, setMode] = useState<"uvis" | "agro">("uvis");
   const isAgro = mode === "agro";
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const accent = isAgro ? "#7f9f55" : "#0088e8";
   const accentStrong = isAgro ? "#607d3f" : "#0879b9";
   const accentLight = isAgro ? "#9aaf78" : "#38bdf8";
@@ -32,8 +49,28 @@ export function SystemMockup() {
   // Navegação da Sidebar
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [notificationCount, setNotificationCount] = useState(36);
+  const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   const navItems = isAgro ? agroNavigation : uvisNavigation;
+  const visibleNavItems = navItems.flatMap((item) => [
+    { ...item, isSubitem: false },
+    ...(item.children && expandedGroup === item.label ? item.children.map((child) => ({ ...child, isSubitem: true })) : []),
+  ]);
+
+  useEffect(() => {
+    contentRef.current?.scrollTo({ top: 0, left: 0 });
+  }, [activeNav, mode]);
+
+  const navigateTo = (screen: string) => {
+    setActiveNav(screen);
+    setMobileMenuOpen(false);
+    setExpandedGroup(agroNavigation.find((item) => item.children?.some((child) => child.label === screen))?.label ?? null);
+  };
+
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    mobileMenuButtonRef.current?.focus({ preventScroll: true });
+  };
 
   return (
     <section 
@@ -140,8 +177,10 @@ export function SystemMockup() {
 
         {/* BOTÃO ALTERNADOR FORA DO MOCKUP */}
         <div data-reveal style={{ display: "flex", justifyContent: "center", marginBottom: "2.5rem" }}>
-          <div style={{
-            display: "inline-flex",
+          <div role="group" aria-label="Selecionar segmento" style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+            width: "min(100%, 380px)",
             background: "rgba(255, 255, 255, 0.12)",
             backdropFilter: "blur(12px)",
             padding: "5px",
@@ -151,12 +190,15 @@ export function SystemMockup() {
           }}>
             <button
               type="button"
+              aria-pressed={!isAgro}
               onClick={() => {
                 setMode("uvis");
-                setActiveNav("Dashboard");
+                navigateTo("Dashboard");
               }}
               style={{
-                padding: "9px 24px",
+                minWidth: 0,
+                minHeight: "44px",
+                padding: "9px 12px",
                 borderRadius: "30px",
                 border: "none",
                 background: !isAgro ? accentStrong : "transparent",
@@ -173,12 +215,15 @@ export function SystemMockup() {
 
             <button
               type="button"
+              aria-pressed={isAgro}
               onClick={() => {
                 setMode("agro");
-                setActiveNav("Talhões & Lavoura");
+                navigateTo("Dashboard");
               }}
               style={{
-                padding: "9px 24px",
+                minWidth: 0,
+                minHeight: "44px",
+                padding: "9px 12px",
                 borderRadius: "30px",
                 border: "none",
                 background: isAgro ? accentStrong : "transparent",
@@ -207,14 +252,36 @@ export function SystemMockup() {
             }}
           />
           
-          <div className="system-window" data-system-theme={isAgro ? "agro" : "uvis"} style={{ background: "#f8fafc", color: "#0f172a" }}>
+          <div
+            className={`system-window ${mobileMenuOpen ? "has-mobile-menu" : ""}`}
+            data-system-theme={isAgro ? "agro" : "uvis"}
+            style={{ background: "#f8fafc", color: "#0f172a" }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape" && mobileMenuOpen) {
+                event.stopPropagation();
+                closeMobileMenu();
+              }
+            }}
+          >
             <header className="system-browserbar mockup-topbar">
               <div className="mockup-topbar__identity">
                 <button
-                  className="mockup-menu-button"
+                  className="mockup-menu-button mockup-menu-button--desktop"
                   type="button"
                   aria-label={sidebarCollapsed ? "Expandir menu" : "Recolher menu"}
                   onClick={() => setSidebarCollapsed((collapsed) => !collapsed)}
+                >
+                  <span /><span /><span />
+                </button>
+
+                <button
+                  ref={mobileMenuButtonRef}
+                  className="mockup-menu-button mockup-menu-button--mobile"
+                  type="button"
+                  aria-label={mobileMenuOpen ? "Fechar menu do sistema" : "Abrir menu do sistema"}
+                  aria-expanded={mobileMenuOpen}
+                  aria-controls="mockup-mobile-navigation"
+                  onClick={() => setMobileMenuOpen((open) => !open)}
                 >
                   <span /><span /><span />
                 </button>
@@ -231,22 +298,65 @@ export function SystemMockup() {
               </button>
             </header>
 
+            <div className="mockup-mobile-location">
+              <span role="status">{activeNav}</span>
+              <small>Demonstração</small>
+            </div>
+
+            <nav
+              className="mockup-mobile-navigation"
+              id="mockup-mobile-navigation"
+              aria-label="Menu do sistema no celular"
+              hidden={!mobileMenuOpen}
+            >
+              <p>Escolha uma área</p>
+              {visibleNavItems.map((item) => (
+                <button
+                  key={item.label}
+                  type="button"
+                  className={item.isSubitem ? "is-subitem" : ""}
+                  aria-current={activeNav === item.label ? "page" : undefined}
+                  aria-expanded={item.children ? expandedGroup === item.label : undefined}
+                  onClick={() => {
+                    if (item.children) {
+                      setExpandedGroup((current) => current === item.label ? null : item.label);
+                      return;
+                    }
+                    navigateTo(item.label);
+                    mobileMenuButtonRef.current?.focus({ preventScroll: true });
+                  }}
+                >
+                  <i className="mockup-nav__icon" aria-hidden="true">{item.icon}</i>
+                  <span>{item.label}</span>
+                  {item.children ? <span className="mockup-nav__chevron" aria-hidden="true">{expandedGroup === item.label ? "⌃" : "⌄"}</span> : null}
+                  {item.badge ? <small>{item.badge === "notifications" ? notificationCount : item.badge}</small> : null}
+                </button>
+              ))}
+            </nav>
+
             <div className={`system-shell mockup-shell ${sidebarCollapsed ? "is-sidebar-collapsed" : ""}`}>
               {/* SIDEBAR */}
               <aside className="system-sidebar mockup-sidebar">
                 <div>
                   <nav className="mockup-nav" aria-label="Menu do sistema">
-                    {navItems.map((item) => (
+                    {visibleNavItems.filter((item) => !sidebarCollapsed || !item.isSubitem).map((item) => (
                       <button
                         type="button"
                         key={item.label}
-                        className={`mockup-nav__item ${activeNav === item.label ? "is-active" : ""}`}
+                        className={`mockup-nav__item ${activeNav === item.label ? "is-active" : ""} ${item.isSubitem ? "is-subitem" : ""} ${item.children ? "is-group" : ""} ${item.children?.some((child) => child.label === activeNav) ? "has-active-child" : ""}`}
                         aria-current={activeNav === item.label ? "page" : undefined}
+                        aria-expanded={item.children ? !sidebarCollapsed && expandedGroup === item.label : undefined}
                         title={sidebarCollapsed ? item.label : undefined}
-                        onClick={() => setActiveNav(item.label)}
+                        onClick={() => {
+                          if (item.children) {
+                            setSidebarCollapsed(false);
+                            setExpandedGroup((current) => !sidebarCollapsed && current === item.label ? null : item.label);
+                          } else navigateTo(item.label);
+                        }}
                       >
                         <i className="mockup-nav__icon" aria-hidden="true">{item.icon}</i>
                         <span className="mockup-nav__label">{item.label}</span>
+                        {item.children ? <span className="mockup-nav__chevron" aria-hidden="true">{expandedGroup === item.label ? "⌃" : "⌄"}</span> : null}
                         {item.badge && (
                           <small className={item.badge === "LIVE" ? "is-live" : ""}>
                             {item.badge === "notifications" ? notificationCount : item.badge}
@@ -257,18 +367,18 @@ export function SystemMockup() {
                   </nav>
                 </div>
                 <div className="system-operator mockup-operator">
-                  <span>PH</span>
-                  <p><strong>Pedro H.</strong><small>{isAgro ? "Engenheiro Agrônomo" : "Administrador"}</small></p>
+                  <span>AD</span>
+                  <p><strong>Admin</strong><small>{isAgro ? "Engenheiro Agrônomo" : "Administrador"}</small></p>
                 </div>
               </aside>
 
               {/* CONTEÚDO PRINCIPAL DO MOCKUP */}
-              <div className="system-content">
-                {!isAgro && activeNav === "Histórico OS" ? <OsHistoryScreen onNavigate={setActiveNav} /> : null}
+              <div className="system-content" ref={contentRef}>
+                {!isAgro && activeNav === "Histórico OS" ? <OsHistoryScreen onNavigate={navigateTo} /> : null}
                 {!isAgro && activeNav === "Notificações" ? (
                   <NotificationsScreen
                     notificationCount={notificationCount}
-                    onNavigate={setActiveNav}
+                    onNavigate={navigateTo}
                     onNotificationCountChange={setNotificationCount}
                   />
                 ) : null}
@@ -278,6 +388,20 @@ export function SystemMockup() {
                 {!isAgro && activeNav === "Relatórios" ? <ReportsScreen /> : null}
 
                 {!isAgro && activeNav === "Agenda" ? <AgendaScreen /> : null}
+
+                {!isAgro && activeNav === "Clientes" ? <ClientsScreen onNavigate={navigateTo} /> : null}
+
+                {!isAgro && activeNav === "Usuário" ? <UsersScreen onNavigate={navigateTo} /> : null}
+
+                {!isAgro && activeNav === "Pilotos" ? <PilotsScreen onNavigate={navigateTo} /> : null}
+
+                {!isAgro && activeNav === "Equipamentos" ? <EquipmentScreen /> : null}
+
+                {!isAgro && activeNav === "Veículos" ? <VehiclesScreen onNavigate={navigateTo} /> : null}
+
+                {!isAgro && activeNav === "Mapas" ? <MapsScreen /> : null}
+
+                {isAgro && (activeNav === "Dashboard" || isAgroView(activeNav)) ? <AgroDashboardScreen screen={activeNav} onNavigate={navigateTo} /> : null}
 
                 {/* MODO AGRO - TALHÕES E LAVOURA */}
                 {isAgro && activeNav === "Talhões & Lavoura" && (
@@ -292,7 +416,7 @@ export function SystemMockup() {
 
                     <div className="system-section-title"><span aria-hidden="true">🌱</span> Status da Lavoura / Safra 2026</div>
 
-                    <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "1rem", marginTop: "1rem" }}>
+                    <div className="agro-overview-grid" style={{ display: "grid", gridTemplateColumns: "var(--agro-columns, 1.2fr 1fr)", gap: "1rem", marginTop: "1rem" }}>
                       <div style={{ background: "#fff", padding: "1rem", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                           <strong style={{ fontSize: "0.9rem", color: "#1e293b" }}>Talhão 04 — Milho</strong>
@@ -343,7 +467,7 @@ export function SystemMockup() {
                   <SystemModuleScreen key={`uvis-${activeNav}`} mode="uvis" screen={activeNav} />
                 ) : null}
 
-                {isAgro && activeNav !== "Talhões & Lavoura" ? (
+                {isAgro && activeNav !== "Talhões & Lavoura" && activeNav !== "Dashboard" && !isAgroView(activeNav) ? (
                   <SystemModuleScreen key={`agro-${activeNav}`} mode="agro" screen={activeNav} />
                 ) : null}
               </div>

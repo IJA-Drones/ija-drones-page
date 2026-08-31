@@ -25,7 +25,7 @@ type ServiceOrder = {
 const serviceOrders: ServiceOrder[] = [
   {
     id: 5499,
-    unit: "UVIS Itaim Paulista",
+    unit: "Unidade 1",
     region: "LESTE",
     address: "Avenida Marechal Tito, 7557",
     district: "Itaim Paulista",
@@ -38,7 +38,7 @@ const serviceOrders: ServiceOrder[] = [
   },
   {
     id: 5498,
-    unit: "UVIS Itaim Paulista",
+    unit: "Unidade 2",
     region: "LESTE",
     address: "Rua Valdomiro Gonzaga Silva, 627",
     district: "Jardim das Oliveiras",
@@ -51,7 +51,7 @@ const serviceOrders: ServiceOrder[] = [
   },
   {
     id: 5497,
-    unit: "UVIS Itaim Paulista",
+    unit: "unidade 3",
     region: "LESTE",
     address: "Rua Carmine Monetti, 1280",
     district: "Jardim das Oliveiras",
@@ -64,7 +64,7 @@ const serviceOrders: ServiceOrder[] = [
   },
   {
     id: 5496,
-    unit: "UVIS Itaim Paulista",
+    unit: "Unidade 4",
     region: "LESTE",
     address: "Rua Moisés Alves dos Santos, 1018",
     district: "Jardim das Oliveiras",
@@ -77,7 +77,7 @@ const serviceOrders: ServiceOrder[] = [
   },
   {
     id: 5495,
-    unit: "UVIS Itaim Paulista",
+    unit: "Unidade 5",
     region: "LESTE",
     address: "Rua Tibúrcio de Sousa, 944",
     district: "Jardim Helena",
@@ -169,17 +169,17 @@ export function OsHistoryScreen({ onNavigate }: OsHistoryScreenProps) {
           </section>
 
           <div className="os-table-wrap">
-            <table className="os-table">
+            <table className="os-table" role="table" aria-label="Ordens de serviço">
               <thead><tr><th>OS</th><th>Unidade</th><th>Operação</th><th>Equipe</th><th>Status</th><th>Ação</th></tr></thead>
               <tbody>
                 {filteredOrders.map((order) => (
-                  <tr key={order.id}>
-                    <td><strong>#{order.id}</strong></td>
-                    <td><b>{order.unit}</b><small>{order.region}</small></td>
-                    <td><b>{order.address}</b><span>{order.district} — {order.city}</span><small>▣ {order.date}&nbsp;&nbsp; ◷ {order.time}</small></td>
-                    <td><span className="os-team">♟ {order.team}</span></td>
-                    <td><span className={`os-status ${order.status === "Concluída" ? "is-complete" : ""}`}>{order.status}</span><small>{order.approval}</small></td>
-                    <td>
+                  <tr key={order.id} role="row">
+                    <td role="cell" data-label="OS"><strong>#{order.id}</strong></td>
+                    <td role="cell" data-label="Unidade"><b>{order.unit}</b><small>{order.region}</small></td>
+                    <td role="cell" data-label="Operação"><b>{order.address}</b><span>{order.district} — {order.city}</span><small>▣ {order.date}&nbsp;&nbsp; ◷ {order.time}</small></td>
+                    <td role="cell" data-label="Equipe"><span className="os-team">♟ {order.team}</span></td>
+                    <td role="cell" data-label="Status"><span className={`os-status ${order.status === "Concluída" ? "is-complete" : ""}`}>{order.status}</span><small>{order.approval}</small></td>
+                    <td role="cell" data-label="Ações">
                       <div className="os-row-actions">
                         <button type="button" aria-label={`Ver OS ${order.id}`} title="Ver OS" onClick={() => setSelectedOrder(order)}>▣</button>
                         <button className="is-pdf" type="button" aria-label={`Exportar PDF da OS ${order.id}`} title="Exportar PDF" onClick={() => showFeedback(`PDF da OS #${order.id} preparado`)}>▥</button>

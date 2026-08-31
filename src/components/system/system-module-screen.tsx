@@ -48,25 +48,6 @@ const positiveStatus = /ativo|ativa|online|operacional|concluída|disponível|re
 const warningStatus = /atenção|revisão|pendente|planejada|moderado|agendada|em rota/i;
 
 const systemModuleConfigs: Readonly<Record<string, ModuleConfig>> = {
-  "Usuário": {
-    eyebrow: "Controle de acesso",
-    title: "Gestão de usuários",
-    description: "Perfis, permissões e acessos de toda a operação municipal.",
-    action: "Novo usuário",
-    kind: "table",
-    metrics: [
-      { label: "Usuários ativos", value: "84", detail: "+6 este mês" },
-      { label: "Administradores", value: "06", detail: "Acesso completo" },
-      { label: "Convites pendentes", value: "03", detail: "Aguardando aceite" },
-    ],
-    columns: ["Usuário", "Perfil", "Unidade", "Status"],
-    rows: [
-      { id: "usuario-1", cells: ["Mariana Costa", "Gestora", "UVIS Lapa/Pinheiros", "Ativo"] },
-      { id: "usuario-2", cells: ["Rafael Lima", "Operador", "UVIS Sé", "Ativo"] },
-      { id: "usuario-3", cells: ["Camila Rocha", "Fiscal", "UVIS Mooca", "Pendente"] },
-      { id: "usuario-4", cells: ["João Martins", "Consulta", "Secretaria Municipal", "Ativo"] },
-    ],
-  },
   "Clientes": {
     eyebrow: "Relacionamento institucional",
     title: "Clientes e unidades atendidas",
@@ -84,63 +65,6 @@ const systemModuleConfigs: Readonly<Record<string, ModuleConfig>> = {
       { id: "cliente-2", cells: ["Prefeitura de Campinas", "Bruno Alves", "06 unidades", "Ativo"] },
       { id: "cliente-3", cells: ["Consórcio Vale Verde", "Renata Souza", "08 municípios", "Em revisão"] },
       { id: "cliente-4", cells: ["Prefeitura de Sorocaba", "Paulo Mendes", "04 unidades", "Ativo"] },
-    ],
-  },
-  "Pilotos": {
-    eyebrow: "Operação aérea",
-    title: "Pilotos e certificações",
-    description: "Disponibilidade, documentação e histórico operacional dos pilotos.",
-    action: "Cadastrar piloto",
-    kind: "table",
-    metrics: [
-      { label: "Pilotos ativos", value: "27", detail: "22 disponíveis" },
-      { label: "Em missão", value: "05", detail: "Agora" },
-      { label: "Certificações", value: "100%", detail: "Documentação válida" },
-    ],
-    columns: ["Piloto", "Região", "Horas de voo", "Status"],
-    rows: [
-      { id: "piloto-1", cells: ["Carlos Henrique", "Leste", "1.284 h", "Em rota"] },
-      { id: "piloto-2", cells: ["Fernanda Melo", "Sul", "986 h", "Disponível"] },
-      { id: "piloto-3", cells: ["Lucas Prado", "Oeste", "742 h", "Disponível"] },
-      { id: "piloto-4", cells: ["Beatriz Nunes", "Centro", "615 h", "Em revisão"] },
-    ],
-  },
-  "Equipamentos": {
-    eyebrow: "Controle patrimonial",
-    title: "Equipamentos operacionais",
-    description: "Drones, baterias e acessórios vinculados às equipes de campo.",
-    action: "Novo equipamento",
-    kind: "table",
-    metrics: [
-      { label: "Equipamentos", value: "68", detail: "57 operacionais" },
-      { label: "Drones", value: "24", detail: "9 modelos" },
-      { label: "Em manutenção", value: "05", detail: "2 prioritários" },
-    ],
-    columns: ["Equipamento", "Identificação", "Equipe", "Status"],
-    rows: [
-      { id: "equipamento-1", cells: ["Drone DJI Mavic 3E", "PLOA 24", "Equipe OA 01", "Operacional"] },
-      { id: "equipamento-2", cells: ["Drone DJI Matrice 350", "PLOA 19", "Equipe UVIS Sul", "Em revisão"] },
-      { id: "equipamento-3", cells: ["Kit RTK móvel", "RTK-008", "Equipe OA 02", "Disponível"] },
-      { id: "equipamento-4", cells: ["Estação de bateria", "BAT-114", "Base Oeste", "Operacional"] },
-    ],
-  },
-  "Veículos": {
-    eyebrow: "Frota terrestre",
-    title: "Veículos e bases móveis",
-    description: "Quilometragem, revisão e alocação da frota de apoio.",
-    action: "Novo veículo",
-    kind: "table",
-    metrics: [
-      { label: "Veículos", value: "16", detail: "13 disponíveis" },
-      { label: "Em operação", value: "03", detail: "Rotas ativas" },
-      { label: "Revisões", value: "02", detail: "Exigem atenção" },
-    ],
-    columns: ["Veículo", "Placa", "Equipe", "Status"],
-    rows: [
-      { id: "veiculo-1", cells: ["Fiat Strada Freedom", "SUK2B95", "Equipe OA 01", "Em revisão"] },
-      { id: "veiculo-2", cells: ["Toyota Hilux SR", "GEO8A22", "Equipe UVIS Sul", "Em rota"] },
-      { id: "veiculo-3", cells: ["Renault Oroch", "OAQ4F17", "Base Leste", "Disponível"] },
-      { id: "veiculo-4", cells: ["Unidade móvel técnica", "TEC1A09", "Equipe OA 02", "Operacional"] },
     ],
   },
   "Alertas Limpeza": {
@@ -198,24 +122,6 @@ const systemModuleConfigs: Readonly<Record<string, ModuleConfig>> = {
       { id: "equipe-uvis-2", cells: ["UVIS Mooca/Aricanduva", "Rafael Lima", "09 agentes", "Ativa"] },
       { id: "equipe-uvis-3", cells: ["UVIS Sé", "Camila Rocha", "11 agentes", "Ativa"] },
       { id: "equipe-uvis-4", cells: ["UVIS Santana/Jaçanã", "João Martins", "08 agentes", "Em revisão"] },
-    ],
-  },
-  "Mapas": {
-    eyebrow: "Inteligência territorial",
-    title: "Mapa operacional",
-    description: "Ocorrências, equipes e áreas prioritárias em uma visão geográfica.",
-    action: "Nova camada",
-    kind: "map",
-    metrics: [
-      { label: "Pontos ativos", value: "143", detail: "Na área visível" },
-      { label: "Equipes no mapa", value: "19", detail: "Atualização ao vivo" },
-      { label: "Áreas críticas", value: "07", detail: "Monitoramento reforçado" },
-    ],
-    columns: ["Região", "Ocorrências", "Equipe", "Status"],
-    rows: [
-      { id: "mapa-1", cells: ["Lapa / Pinheiros", "38 pontos", "OA 01", "Em rota"] },
-      { id: "mapa-2", cells: ["Sé / Centro", "27 pontos", "UVIS Sé", "Atenção"] },
-      { id: "mapa-3", cells: ["Mooca / Leste", "21 pontos", "OA 03", "Regular"] },
     ],
   },
   "Geolocalização": {
@@ -387,7 +293,9 @@ function ModuleVisual({ config }: { config: ModuleConfig }) {
 export function SystemModuleScreen({ mode, screen }: SystemModuleScreenProps) {
   const [search, setSearch] = useState("");
   const [feedback, setFeedback] = useState("");
-  const screenIcon = (mode === "agro" ? agroNavigation : uvisNavigation).find((item) => item.label === screen)?.icon ?? "◇";
+  const screenIcon = (mode === "agro" ? agroNavigation : uvisNavigation)
+    .flatMap((item) => [item, ...(item.children ?? [])])
+    .find((item) => item.label === screen)?.icon ?? "◇";
   const config = systemModuleConfigs[screen];
 
   if (!config) return null;
@@ -432,17 +340,17 @@ export function SystemModuleScreen({ mode, screen }: SystemModuleScreenProps) {
       </div>
 
       <div className="module-table-wrap">
-        <table className="module-table">
+        <table className="module-table" role="table" aria-label={config.title}>
           <thead><tr>{config.columns.map((column) => <th key={column}>{column}</th>)}<th>Ação</th></tr></thead>
           <tbody>
             {filteredRows.map((row) => (
-              <tr key={row.id}>
+              <tr key={row.id} role="row">
                 {row.cells.map((cell, index) => (
-                  <td key={`${row.id}-${config.columns[index]}`}>
+                  <td key={`${row.id}-${config.columns[index]}`} role="cell" data-label={config.columns[index]}>
                     {index === row.cells.length - 1 ? <span className={`module-status ${getStatusClass(cell)}`}>{cell}</span> : cell}
                   </td>
                 ))}
-                <td><button type="button" aria-label={`Abrir ${row.cells[0]}`} onClick={() => showFeedback(`${row.cells[0]} aberto`)}>•••</button></td>
+                <td role="cell" data-label="Ação"><button type="button" aria-label={`Abrir ${row.cells[0]}`} onClick={() => showFeedback(`${row.cells[0]} aberto`)}>•••</button></td>
               </tr>
             ))}
           </tbody>

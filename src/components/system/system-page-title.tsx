@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 type SystemPageTitleProps = {
   description?: ReactNode;
   eyebrow?: string;
-  icon: string;
+  icon: ReactNode;
   id: string;
   meta?: ReactNode;
   title: string;

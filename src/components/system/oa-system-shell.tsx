@@ -53,7 +53,7 @@ export function OaSystemShell({
             aria-expanded={profileOpen}
             onClick={() => setProfileOpen((open) => !open)}
           >
-            <span aria-hidden="true">PH</span><b>ADMIN PREFEITURA</b><i aria-hidden="true">⌄</i>
+            <span aria-hidden="true">AD</span><b>ADMIN PREFEITURA</b><i aria-hidden="true">⌄</i>
           </button>
           {profileOpen ? (
             <div className="os-profile-menu">
@@ -88,8 +88,8 @@ export function OaSystemShell({
             })}
           </nav>
           <div className="system-operator mockup-operator">
-            <span>PH</span>
-            <p><strong>Pedro H.</strong><small>Administrador</small></p>
+            <span>AD</span>
+            <p><strong>Admin</strong><small>Administrador</small></p>
           </div>
         </aside>
 

@@ -21,37 +21,37 @@ const initialNotifications: readonly SystemNotification[] = [
   {
     id: 114,
     title: "Alerta automático: manutenção de drones desatualizada",
-    description: "2 drone(s) com última manutenção acima de 90 dias: PLOA 24 (383 dias), PLOA 19 (295 dias).",
+    description: "2 drone(s) com última manutenção acima de 90 dias: Drone 1 (383 dias), Drone 2 (295 dias).",
     date: "27/08/2026 13:44",
   },
   {
     id: 113,
     title: "Alerta automático: revisões de veículo",
-    description: "1 veículo(s) com revisão vencida ou próxima (até 500 km); 1 já vencido(s): SUK2B95 (vencido há 2072 km).",
+    description: "1 veículo(s) com revisão vencida ou próxima (até 500 km); 1 já vencido(s): Veículo 1 (vencido há 2072 km).",
     date: "27/08/2026 13:44",
   },
   {
     id: 112,
     title: "Alerta automático: manutenção de drones desatualizada",
-    description: "2 drone(s) com última manutenção acima de 90 dias: PLOA 24 (382 dias), PLOA 19 (294 dias).",
+    description: "2 drone(s) com última manutenção acima de 90 dias: Drone 1 (382 dias), Drone 2 (294 dias).",
     date: "26/08/2026 15:04",
   },
   {
     id: 111,
     title: "Alerta automático: revisões de veículo",
-    description: "1 veículo(s) com revisão vencida ou próxima (até 500 km); 1 já vencido(s): SUK2B95 (vencido há 2072 km).",
+    description: "1 veículo(s) com revisão vencida ou próxima (até 500 km); 1 já vencido(s): Veículo 1 (vencido há 2072 km).",
     date: "26/08/2026 15:04",
   },
   {
     id: 110,
     title: "Alerta automático: manutenção de drones desatualizada",
-    description: "2 drone(s) com última manutenção acima de 90 dias: PLOA 24 (382 dias), PLOA 19 (294 dias).",
+    description: "2 drone(s) com última manutenção acima de 90 dias: Drone 1 (382 dias), Drone 2 (294 dias).",
     date: "26/08/2026 14:03",
   },
   {
     id: 109,
     title: "Alerta automático: revisões de veículo",
-    description: "1 veículo(s) com revisão vencida ou próxima (até 500 km); 1 já vencido(s): SUK2B95 (vencido há 2072 km).",
+    description: "1 veículo(s) com revisão vencida ou próxima (até 500 km); 1 já vencido(s): Veículo 1 (vencido há 2072 km).",
     date: "26/08/2026 14:03",
   },
 ];

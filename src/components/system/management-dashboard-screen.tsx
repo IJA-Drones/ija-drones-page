@@ -28,7 +28,7 @@ type ManagementRequest = {
 const managementRequests: readonly ManagementRequest[] = [
   {
     id: 5530,
-    unit: "UVIS Lapa/Pinheiros",
+    unit: "Unidade 1",
     region: "OESTE",
     scheduledAt: "02/09/2026 às 12:30",
     createdAt: "27/08/2026 às 16:25",
@@ -48,7 +48,7 @@ const managementRequests: readonly ManagementRequest[] = [
   },
   {
     id: 5529,
-    unit: "UVIS Lapa/Pinheiros",
+    unit: "Unidade 2",
     region: "OESTE",
     scheduledAt: "02/09/2026 às 14:00",
     createdAt: "27/08/2026 às 15:48",

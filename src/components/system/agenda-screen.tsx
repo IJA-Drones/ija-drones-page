@@ -50,6 +50,17 @@ export function AgendaScreen() {
   const [monthIndex, setMonthIndex] = useState(1);
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [feedback, setFeedback] = useState("");
+  const [selectedDay, setSelectedDay] = useState(3);
+  // The August appointments are demonstration data; adjacent months stay empty.
+  const visibleDays: readonly CalendarDay[] = monthIndex === 1 ? calendarDays : Array.from({ length: 42 }, (_, index) => {
+    const month = monthIndex + 6;
+    const firstWeekday = new Date(Date.UTC(2026, month, 1)).getUTCDay();
+    const date = new Date(Date.UTC(2026, month, index - firstWeekday + 1));
+    return { day: date.getUTCDate(), outside: date.getUTCMonth() !== month };
+  });
+  const selectedEvents = monthIndex === 1
+    ? calendarDays.find((day) => day.day === selectedDay && !day.outside)?.events ?? []
+    : [];
 
   const showFeedback = (message: string) => {
     setFeedback(message);
@@ -58,6 +69,7 @@ export function AgendaScreen() {
 
   const changeMonth = (direction: -1 | 1) => {
     setMonthIndex((current) => Math.min(monthLabels.length - 1, Math.max(0, current + direction)));
+    setSelectedDay(1);
   };
 
   return (
@@ -103,17 +115,38 @@ export function AgendaScreen() {
           <div className="agenda-month">
             <div className="agenda-weekdays">{weekDays.map((day) => <span key={day}>{day}</span>)}</div>
             <div className="agenda-grid">
-              {calendarDays.map((day, dayIndex) => (
-                <article className={day.outside ? "is-outside" : ""} key={`${dayIndex}-${day.day}`}>
+              {visibleDays.map((day, dayIndex) => (
+                <article className={`${day.outside ? "is-outside" : ""} ${!day.outside && day.day === selectedDay ? "is-selected-day" : ""}`} key={`${dayIndex}-${day.day}`}>
                   <span className="agenda-day-number">{day.day}</span>
+                  <button
+                    className="agenda-mobile-day"
+                    type="button"
+                    disabled={day.outside}
+                    aria-label={`${day.day} de ${monthLabels[monthIndex]}, ${day.events?.length ?? 0} compromissos`}
+                    aria-pressed={!day.outside && day.day === selectedDay}
+                    onClick={() => setSelectedDay(day.day)}
+                  >
+                    <span>{day.day}</span>
+                    {day.events?.length ? <small aria-hidden="true">{day.events.length}</small> : null}
+                  </button>
                   {day.events ? <div className="agenda-day-events">{day.events.map((event, eventIndex) => <button className={event.tone ? `is-${event.tone}` : ""} type="button" title={event.title} key={`${event.title}-${eventIndex}`} onClick={() => showFeedback(`${event.title} aberto`)}>{event.tone === "warning" ? "◉ " : ""}{event.title}</button>)}</div> : null}
                 </article>
               ))}
             </div>
+            <section className="agenda-mobile-appointments" aria-labelledby="agenda-selected-day">
+              <h5 id="agenda-selected-day" aria-live="polite">{selectedDay} de {monthLabels[monthIndex]}</h5>
+              {selectedEvents.length ? selectedEvents.map((event, index) => (
+                <button key={`${event.title}-${index}`} type="button" onClick={() => showFeedback(`${event.title} aberto`)}>
+                  <i className={event.tone === "warning" ? "is-warning" : ""} aria-hidden="true" />
+                  <span><b>{event.title}</b><small>Operação UVIS{event.tone === "warning" ? " • Reagendamento" : " • Agendada"}</small></span>
+                  <span aria-hidden="true">›</span>
+                </button>
+              )) : <p>Nenhum compromisso neste dia.</p>}
+            </section>
           </div>
         ) : (
           <div className="agenda-list">
-            {listAppointments.map((appointment) => <button type="button" key={appointment.id} onClick={() => showFeedback(`${appointment.title} aberto`)}><time>AGO <strong>{appointment.day}</strong></time><span><b>{appointment.title}</b><small>Operação UVIS • 08:00–17:00</small></span><i>›</i></button>)}
+            {monthIndex === 1 ? listAppointments.map((appointment) => <button type="button" key={appointment.id} onClick={() => showFeedback(`${appointment.title} aberto`)}><time>AGO <strong>{appointment.day}</strong></time><span><b>{appointment.title}</b><small>Operação UVIS • 08:00–17:00</small></span><i>›</i></button>) : <p className="agenda-list-empty">Nenhum compromisso neste mês.</p>}
           </div>
         )}
       </section>
