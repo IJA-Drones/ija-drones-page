@@ -1,6 +1,6 @@
 export const site = {
   name: "IJA Drones",
-  email: "enzo.carvalho@ijadrones.com.br",
+  email: "suporte@ijadrones.com.br",
   contactEmail: {
     subject: "Tenho interesse nos serviços da IJA Drones",
     body: [

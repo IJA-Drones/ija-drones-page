@@ -294,9 +294,9 @@ export function SystemMockup() {
                   <span /><span /><span />
                 </button>
 
-                <div className={`mockup-brand ${isAgro ? "mockup-brand--agro" : "mockup-brand--ocean"}`} aria-label={isAgro ? "IJA System Agro" : "OceanoAzul"}>
-                  <span className="mockup-brand__mark">{isAgro ? "IJA" : "OA"}</span>
-                  <strong>{isAgro ? <>IJA System<small>AGRO</small></> : "OceanoAzul"}</strong>
+                <div className={`mockup-brand ${isAgro ? "mockup-brand--agro" : "mockup-brand--ocean"}`} aria-label={isAgro ? "IJA System Agro" : "IJA System (Prefeituras)"}>
+                  <span className="mockup-brand__mark">{isAgro ? "IJA" : "IJA"}</span>
+                  <strong>{isAgro ? <>IJA System<small>AGRO</small></> : "IJA System (Prefeituras)"}</strong>
                 </div>
               </div>
 
