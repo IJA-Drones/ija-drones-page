@@ -5,7 +5,7 @@ import { BrazilMap } from "@/components/brazil-map";
 import { ScrollAnimations } from "@/components/scroll-animations";
 import { SiteHeader } from "@/components/site-header";
 import { SystemMockup } from "@/components/system-mockup";
-import { site } from "@/content/site";
+import { contactEmailHref, site } from "@/content/site";
 
 const solutions = [
   {
@@ -51,14 +51,16 @@ export default function Home() {
       <main id="conteudo">
         {/* HERO SECTION */}
         <section className="hero" id="inicio">
-          <Image
-            className="hero-image"
-            src="/media/ija-drone-spraying.jpeg"
-            alt="Drone agrícola realizando pulverização de precisão sobre uma lavoura"
-            fill
-            priority
-            sizes="100vw"
-          />
+          <div className="hero-media">
+            <Image
+              className="hero-image"
+              src="/media/ija-drone-spraying-f3d07e6f.jpeg"
+              alt="Drone agrícola realizando pulverização de precisão sobre uma lavoura"
+              fill
+              preload
+              sizes="100vw"
+            />
+          </div>
           <div className="hero-overlay" />
           <div className="hero-grid" aria-hidden="true" />
 
@@ -76,12 +78,6 @@ export default function Home() {
               </div>
             </div>
 
-            <aside className="mission-card" aria-label="Exemplo de acompanhamento de missão">
-              <div className="mission-card__top"><span><i /> Missão ativa</span><b>ML-0142</b></div>
-              <div className="mission-card__metric"><span>Status operacional</span><strong>Área em aplicação</strong></div>
-              <div className="mission-progress"><i /></div>
-              <div className="mission-card__meta"><span>Talhão 04</span><span>Operação monitorada</span></div>
-            </aside>
           </div>
 
           <div className="hero-bottom">
@@ -197,9 +193,9 @@ export default function Home() {
           <div className="container contact-grid" data-reveal>
             <div><span className="kicker">Próxima missão</span><h2>Vamos colocar sua operação no radar?</h2></div>
             <div className="contact-copy">
-              <p>Conte onde está a área e qual é o objetivo. A equipe IJA ajuda a desenhar o próximo passo.</p>
-              <a className="button button--white" href={`mailto:${site.email}`}>Falar com um especialista <span aria-hidden="true">↗</span></a>
-              <a className="contact-email" href={`mailto:${site.email}`}>{site.email}</a>
+              <p>Fale com a equipe IJA sem precisar escrever nada. O botão abre seu aplicativo de e-mail com a mensagem pronta: basta clicar em enviar.</p>
+              <a className="button button--white" href={contactEmailHref}>Falar com um especialista <span aria-hidden="true">↗</span></a>
+              <a className="contact-email" href={contactEmailHref}>{site.email}</a>
             </div>
           </div>
         </section>
@@ -214,7 +210,7 @@ export default function Home() {
                 <Image src="/images/ija-drones-logo-transparent.png" alt="IJA Drones" width={132} height={132} style={{ objectFit: "contain" }} />
               </a>
               <p>Soluções tecnológicas avançadas para o mercado de drones e aviação agrícola.</p>
-              <a className="footer-email" href={`mailto:${site.email}`}>{site.email}</a>
+              <a className="footer-email" href={contactEmailHref}>{site.email}</a>
             </div>
 
             <nav className="footer-column" aria-label="Produto">
@@ -237,7 +233,7 @@ export default function Home() {
               <h3>Suporte</h3>
               <a href={`mailto:${site.email}?subject=Ajuda%20com%20a%20IJA%20Drones`}>Central de ajuda</a>
               <a href="#plataforma">Status do sistema</a>
-              <a href={`mailto:${site.email}`}>Fale conosco</a>
+              <a href={contactEmailHref}>Fale conosco</a>
             </nav>
           </div>
 

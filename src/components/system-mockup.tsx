@@ -37,7 +37,9 @@ const implementedUvisScreens = new Set([
 export function SystemMockup() {
   // Estado do MODO: 'uvis' (Prefeitura/Urbano) ou 'agro' (Agrícola)
   const [mode, setMode] = useState<"uvis" | "agro">("uvis");
+  const [colorMode, setColorMode] = useState<"light" | "dark">("light");
   const isAgro = mode === "agro";
+  const isDark = colorMode === "dark";
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
@@ -241,7 +243,13 @@ export function SystemMockup() {
         </div>
 
         {/* CENTRO DA TELA: MOCKUP INTERATIVO */}
-        <div className="system-mockup" data-system-theme={isAgro ? "agro" : "uvis"} data-reveal aria-label="Demonstração do painel">
+        <div
+          className="system-mockup"
+          data-system-theme={isAgro ? "agro" : "uvis"}
+          data-color-mode={colorMode}
+          data-reveal
+          aria-label="Demonstração do painel"
+        >
           <div
             className="dashboard-glow"
             aria-hidden="true"
@@ -255,7 +263,7 @@ export function SystemMockup() {
           <div
             className={`system-window ${mobileMenuOpen ? "has-mobile-menu" : ""}`}
             data-system-theme={isAgro ? "agro" : "uvis"}
-            style={{ background: "#f8fafc", color: "#0f172a" }}
+            data-color-mode={colorMode}
             onKeyDown={(event) => {
               if (event.key === "Escape" && mobileMenuOpen) {
                 event.stopPropagation();
@@ -292,10 +300,24 @@ export function SystemMockup() {
                 </div>
               </div>
 
-              <button className="system-profile mockup-profile" type="button" aria-label={isAgro ? "Perfil do gestor Agro" : "Perfil da Prefeitura"}>
-                <span aria-hidden="true">●</span>
-                <i aria-hidden="true">⌄</i>
-              </button>
+              <div className="mockup-topbar__actions">
+                <button
+                  className="mockup-theme-toggle"
+                  type="button"
+                  aria-label={isDark ? "Ativar tema claro no sistema" : "Ativar tema escuro no sistema"}
+                  aria-pressed={isDark}
+                  title={isDark ? "Ativar tema claro" : "Ativar tema escuro"}
+                  onClick={() => setColorMode((current) => current === "light" ? "dark" : "light")}
+                >
+                  <span className="mockup-theme-toggle__icon" aria-hidden="true">{isDark ? "☀" : "☾"}</span>
+                  <span className="mockup-theme-toggle__label">{isDark ? "Tema claro" : "Tema escuro"}</span>
+                </button>
+
+                <button className="system-profile mockup-profile" type="button" aria-label={isAgro ? "Perfil do gestor Agro" : "Perfil da Prefeitura"}>
+                  <span aria-hidden="true">●</span>
+                  <i aria-hidden="true">⌄</i>
+                </button>
+              </div>
             </header>
 
             <div className="mockup-mobile-location">

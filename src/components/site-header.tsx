@@ -1,12 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 import { site } from "@/content/site";
 
 export function SiteHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [siteTheme, setSiteTheme] = useState<"light" | "dark">("light");
+  const isDark = siteTheme === "dark";
+
+  useEffect(() => {
+    const storedTheme = window.localStorage?.getItem("ija-site-theme");
+    const preferredTheme = window.matchMedia?.("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    const initialTheme = storedTheme === "dark" || storedTheme === "light" ? storedTheme : preferredTheme;
+
+    document.documentElement.dataset.siteTheme = initialTheme;
+    const animationFrame = window.requestAnimationFrame(() => setSiteTheme(initialTheme));
+
+    return () => window.cancelAnimationFrame(animationFrame);
+  }, []);
+
+  const toggleSiteTheme = () => {
+    const nextTheme = isDark ? "light" : "dark";
+
+    setSiteTheme(nextTheme);
+    document.documentElement.dataset.siteTheme = nextTheme;
+    window.localStorage?.setItem("ija-site-theme", nextTheme);
+  };
 
   return (
     <header className="site-header">
@@ -17,7 +38,7 @@ export function SiteHeader() {
             alt="IJA Drones - Tecnologia e Inovação"
             width={100}
             height={100}
-            priority
+            preload
             className="header-logo"
           />
         </a>
@@ -30,23 +51,36 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <a className="header-cta" href="#contato">
-          Planejar operação
-          <span aria-hidden="true">↗</span>
-        </a>
+        <div className="header-actions">
+          <button
+            className="site-theme-toggle"
+            type="button"
+            aria-label={isDark ? "Ativar tema claro do site" : "Ativar tema escuro do site"}
+            aria-pressed={isDark}
+            title={isDark ? "Ativar tema claro" : "Ativar tema escuro"}
+            onClick={toggleSiteTheme}
+          >
+            <span aria-hidden="true">{isDark ? "☀" : "☾"}</span>
+          </button>
 
-        <button
-          className="menu-button"
-          type="button"
-          aria-expanded={menuOpen}
-          aria-controls="mobile-menu"
-          aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+          <a className="header-cta" href="#contato">
+            Planejar operação
+            <span aria-hidden="true">↗</span>
+          </a>
+
+          <button
+            className="menu-button"
+            type="button"
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
       </div>
 
       {menuOpen ? (

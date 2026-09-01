@@ -1,6 +1,18 @@
 export const site = {
   name: "IJA Drones",
-  email: "suporte@ijadrones.com.br",
+  email: "enzo.carvalho@ijadrones.com.br",
+  contactEmail: {
+    subject: "Tenho interesse nos serviços da IJA Drones",
+    body: [
+      "Olá, equipe IJA Drones!",
+      "",
+      "Conheci o site e tenho interesse em saber mais sobre os serviços de vocês. Gostaria de conversar com um especialista para entender as opções e solicitar um orçamento.",
+      "",
+      "Podem retornar por este e-mail?",
+      "",
+      "Obrigado!",
+    ].join("\r\n"),
+  },
   navigation: [
     { label: "Visão", href: "#visao" },
     { label: "Soluções", href: "#solucoes" },
@@ -111,5 +123,7 @@ export const site = {
     },
   ],
 } as const;
+
+export const contactEmailHref = `mailto:${site.email}?subject=${encodeURIComponent(site.contactEmail.subject)}&body=${encodeURIComponent(site.contactEmail.body)}`;
 
 export type SolutionKey = keyof typeof site.solutions;
