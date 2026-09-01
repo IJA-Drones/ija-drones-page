@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 
+import { PwaRegistration } from "@/components/pwa-registration";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,6 +13,20 @@ export const metadata: Metadata = {
   },
   description:
     "Tecnologia brasileira para drones: pulverização agrícola, planejamento de precisão e uma plataforma soberana para gestão de missões e operações.",
+  applicationName: "IJA Drones",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "IJA Drones",
+  },
+  icons: {
+    icon: [
+      { url: "/pwa/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/pwa/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [{ url: "/pwa/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
   keywords: [
     "drones agrícolas",
     "pulverização com drone",
@@ -38,13 +54,17 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f7faf8",
+  viewportFit: "cover",
+  themeColor: "#06110d",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        <PwaRegistration />
+        {children}
+      </body>
     </html>
   );
 }
