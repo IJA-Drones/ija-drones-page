@@ -5,6 +5,7 @@ import { BrazilMap } from "@/components/brazil-map";
 import { ScrollAnimations } from "@/components/scroll-animations";
 import { SiteHeader } from "@/components/site-header";
 import { SystemMockup } from "@/components/system-mockup";
+import { ContactForm } from "@/components/contact-form";
 import { contactEmailHref, site } from "@/content/site";
 
 const solutions = [
@@ -193,9 +194,8 @@ export default function Home() {
           <div className="container contact-grid" data-reveal>
             <div><span className="kicker">Próxima missão</span><h2>Vamos colocar sua operação no radar?</h2></div>
             <div className="contact-copy">
-              <p>Fale com a equipe IJA sem precisar escrever nada. O botão abre seu aplicativo de e-mail com a mensagem pronta: basta clicar em enviar.</p>
-              <a className="button button--white" href={contactEmailHref}>Falar com um especialista <span aria-hidden="true">↗</span></a>
-              <a className="contact-email" href={contactEmailHref}>{site.email}</a>
+              <ContactForm />
+              <p style={{ marginTop: "2rem", fontSize: "0.9rem", opacity: 0.8 }}>Ou envie um e-mail direto: <a className="contact-email" href={contactEmailHref}>{site.email}</a></p>
             </div>
           </div>
         </section>
