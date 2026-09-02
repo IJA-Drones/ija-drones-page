@@ -6,6 +6,7 @@ import { ScrollAnimations } from "@/components/scroll-animations";
 import { SiteHeader } from "@/components/site-header";
 import { SystemMockup } from "@/components/system-mockup";
 import { ContactForm } from "@/components/contact-form";
+import { SolutionsExperience } from "@/components/solutions-experience";
 import { contactEmailHref, site } from "@/content/site";
 
 const solutions = [
@@ -116,6 +117,7 @@ export default function Home() {
                 </article>
               ))}
             </div>
+            <SolutionsExperience />
           </div>
         </section>
 
