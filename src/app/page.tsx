@@ -192,10 +192,17 @@ export default function Home() {
         <section className="contact" id="contato">
           <div className="contact-radar" aria-hidden="true"><i /><i /><i /></div>
           <div className="container contact-grid" data-reveal>
-            <div><span className="kicker">Próxima missão</span><h2>Vamos colocar sua operação no radar?</h2></div>
+            <div className="contact-heading">
+              <span className="kicker">Próxima missão</span>
+              <h2>Vamos colocar sua operação no radar?</h2>
+              <p>Do primeiro contato ao planejamento da missão, você fala diretamente com quem entende da operação.</p>
+              <a className="contact-channel" href={contactEmailHref}>
+                <span><small>Prefere falar por e-mail?</small><strong>{site.email}</strong></span>
+                <b aria-hidden="true">↗</b>
+              </a>
+            </div>
             <div className="contact-copy">
               <ContactForm />
-              <p style={{ marginTop: "2rem", fontSize: "0.9rem", opacity: 0.8 }}>Ou envie um e-mail direto: <a className="contact-email" href={contactEmailHref}>{site.email}</a></p>
             </div>
           </div>
         </section>
