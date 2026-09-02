@@ -2,6 +2,29 @@
 
 import { useEffect, useState } from "react";
 
+function formatBrazilianPhone(value: string): string {
+  let digits = value.replace(/\D/g, "");
+
+  if (digits.length > 11 && digits.startsWith("55")) {
+    digits = digits.slice(2);
+  }
+
+  digits = digits.slice(0, 11);
+
+  if (!digits) return "";
+  if (digits.length <= 2) return `(${digits}`;
+
+  const areaCode = `(${digits.slice(0, 2)})`;
+  const localNumber = digits.slice(2);
+
+  if (localNumber.length <= 4) {
+    return `${areaCode} ${localNumber}`;
+  }
+
+  const prefixLength = localNumber.length <= 8 ? 4 : 5;
+  return `${areaCode} ${localNumber.slice(0, prefixLength)}-${localNumber.slice(prefixLength)}`;
+}
+
 export function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -28,13 +51,16 @@ export function ContactForm() {
     >
   ) => {
     const { name, value } = e.target;
+    const formattedValue =
+      name === "phone" ? formatBrazilianPhone(value) : value;
+
     if (status === "error") {
       setStatus("idle");
       setErrorMessage("");
     }
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: formattedValue,
     }));
   };
 
@@ -129,7 +155,9 @@ export function ContactForm() {
             placeholder="(35) 99999-9999"
             autoComplete="tel"
             inputMode="tel"
-            maxLength={30}
+            minLength={14}
+            maxLength={15}
+            title="Informe o telefone com DDD"
           />
         </div>
       </div>
