@@ -164,9 +164,9 @@ export function SystemMockup() {
           </span>
           <h2 style={{ color: "#ffffff", marginTop: "0.8rem" }}>
             {isAgro ? (
-              <>Gestão Agrícola de Precisão<br /><span style={{ color: accentLight }}>cada hectare sob controle</span></>
+              <>Gestão Agrícola de Precisão<br /><span style={{ color: accentLight }}>Cada hectare sob controle</span></>
             ) : (
-              <>Poder e Controle Operacional<br /><span style={{ color: accentLight }}>gestão eficiente para prefeituras</span></>
+              <>Poder e Controle Operacional<br /><span style={{ color: accentLight }}>Gestão eficiente para prefeituras</span></>
             )}
           </h2>
           <p style={{ color: "rgba(255, 255, 255, 0.8)", maxWidth: "640px", marginInline: "auto" }}>

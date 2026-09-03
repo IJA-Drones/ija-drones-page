@@ -7,6 +7,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SystemMockup } from "@/components/system-mockup";
 import { ContactForm } from "@/components/contact-form";
 import { SolutionsExperience } from "@/components/solutions-experience";
+import { TerrenoExperience } from "@/components/terreno-experience";
 import { contactEmailHref, site } from "@/content/site";
 
 const solutions = [
@@ -79,7 +80,6 @@ export default function Home() {
                 <a className="button button--glass" href="#solucoes">Explorar soluções</a>
               </div>
             </div>
-
           </div>
 
           <div className="hero-bottom">
@@ -153,6 +153,54 @@ export default function Home() {
             <div className="software-story__visual" data-reveal>
               <BrazilMap />
             </div>
+          </div>
+        </section>
+
+        {/* NOTÍCIA / EXPANSÃO ITAJUBÁ COM TERRENO 3D */}
+        <section className="news-expansion section" id="fabrica-itajuba">
+          <div className="container">
+            <article className="news-card" data-reveal>
+              <div className="news-card__media news-card__media--3d">
+                <div className="news-card__terrain">
+                  <TerrenoExperience />
+                </div>
+
+                <span className="news-card__badge">
+                  Expansão Industrial
+                </span>
+              </div>
+
+              <div className="news-card__content">
+                <div className="news-card__meta">
+                  <span className="news-card__tag">Indústria & Inovação</span>
+                  <time dateTime="2026-09-03">Setembro de 2026</time>
+                </div>
+
+                <h2>IJA Drones anuncia nova fábrica em Itajubá para impulsionar a tecnologia nacional</h2>
+
+                <p>
+                  O polo tecnológico do Sul de Minas Gerais foi o local escolhido para abrigar a nova unidade fabril da IJA Drones. O terreno já foi selecionado para receber uma estrutura moderna voltada à montagem, testes de voo e desenvolvimento de soluções de ponta.
+                </p>
+
+                <div className="news-card__highlights">
+                  <div>
+                    <strong>Polo Tecnológico</strong>
+                    <span>Sinergia com o ecossistema de engenharia de Itajubá</span>
+                  </div>
+                  <div>
+                    <strong>Estrutura Própria</strong>
+                    <span>Ambientes de testes e montagem integrada para alta demanda</span>
+                  </div>
+                </div>
+
+                <div className="news-card__footer">
+                  <span className="news-card__author">Comunicado Oficial IJA System</span>
+                  <a className="button button--primary" href="#contato">
+                    Saber mais sobre a expansão <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </div>
+            </article>
           </div>
         </section>
 
