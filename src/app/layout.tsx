@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import Script from "next/script";
 
 import { PwaRegistration } from "@/components/pwa-registration";
 
@@ -62,8 +63,13 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="pt-BR">
       <body>
-        <PwaRegistration />
         {children}
+        <Script
+          src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"
+          type="module"
+          strategy="lazyOnload"
+        />
+        <PwaRegistration />
       </body>
     </html>
   );

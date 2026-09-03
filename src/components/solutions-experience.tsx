@@ -1,29 +1,22 @@
 "use client";
 
-import Image from "next/image";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export function SolutionsExperience() {
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const modelRef = useRef<HTMLElement | null>(null);
+  const [isPlaying, setIsPlaying] = useState(true);
 
-  const updatePerspective = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (
-      event.pointerType === "touch" ||
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
-      !canvasRef.current
-    ) return;
+  const toggleAnimation = () => {
+    const modelViewer = modelRef.current as any;
+    if (!modelViewer) return;
 
-    const bounds = event.currentTarget.getBoundingClientRect();
-    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
-    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    if (isPlaying) {
+      modelViewer.pause();
+    } else {
+      modelViewer.play();
+    }
 
-    canvasRef.current.style.setProperty("--mapping-x", `${x * 5}deg`);
-    canvasRef.current.style.setProperty("--mapping-y", `${y * -4}deg`);
-  };
-
-  const resetPerspective = () => {
-    canvasRef.current?.style.removeProperty("--mapping-x");
-    canvasRef.current?.style.removeProperty("--mapping-y");
+    setIsPlaying(!isPlaying);
   };
 
   return (
@@ -37,47 +30,48 @@ export function SolutionsExperience() {
 
       <div className="solutions-experience__body">
         <div className="mapping-demo">
+          {/* TOPO DO PAINEL COM STATUS E BOTÃO PAUSA/PLAY */}
           <div className="mapping-panel__top">
             <div>
               <span>Projeto 024</span>
               <strong>Fazenda Horizonte</strong>
             </div>
-            <span className="mapping-status"><i /> Processado</span>
-          </div>
 
-          <div
-            className="mapping-viewport"
-            onPointerMove={updatePerspective}
-            onPointerLeave={resetPerspective}
-          >
-            <div
-              className="mapping-canvas"
-              ref={canvasRef}
-              role="img"
-              aria-label="Mapa aéreo agrícola"
-            >
-              <div className="mapping-layer mapping-layer--base">
-                <Image
-                  src="/media/drone-mapping-orthomosaic.jpg"
-                  alt="Mapeamento agrícola ortomosaico"
-                  fill
-                  sizes="(max-width: 820px) 94vw, 72vw"
-                  draggable={false}
-                />
-              </div>
-              <div className="mapping-contours" aria-hidden="true" />
-              <div className="mapping-coordinate mapping-coordinate--top">
-                <span>22°25&apos;58.6&quot;S</span>
-                <strong>45°27&apos;10.2&quot;W</strong>
-              </div>
-              <div className="mapping-coordinate mapping-coordinate--bottom">
-                <span>CAPTURA RTK</span>
-                <strong>612 imagens</strong>
-              </div>
+            <div className="mapping-controls">
+              <button 
+                type="button" 
+                className="mapping-play-btn" 
+                onClick={toggleAnimation}
+              >
+                {isPlaying ? "⏸ Pausar Animação" : "▶ Iniciar Animação"}
+              </button>
+              <span className="mapping-status"><i /> Processado</span>
             </div>
           </div>
 
-          <p className="mapping-caption">Demonstração visual de um levantamento aéreo processado.</p>
+          {/* VIEWPORT INTERATIVA (ESTÁTICA, APENAS MOUSE CONTROL) */}
+          <div className="mapping-viewport">
+            <model-viewer
+            ref={modelRef}
+            className="unified-3d-scene"
+            src="/media/modelo_completo.glb"
+            alt="Mapeamento agrícola 3D com drone"
+            camera-controls
+            autoplay
+            shadow-intensity="1.5"
+            exposure="1.1"
+            environment-image="neutral"
+            interaction-prompt="none"
+            loading="eager"
+            camera-orbit="0deg 50deg 60%" /* 80% aproxima a câmera no carregamento inicial */
+            min-camera-orbit="auto 15deg 40%" /* Permite ao usuário dar zoom até 40% de proximidade */
+            max-camera-orbit="auto 70deg 200%" /* Limita o zoom out máximo */
+            field-of-view="18deg"
+          />
+
+          </div>
+
+          <p className="mapping-caption">Arraste com o mouse para girar ou use o scroll para aplicar zoom.</p>
         </div>
       </div>
     </div>
