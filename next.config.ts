@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Endereços usados na prévia local, além de localhost.
+  allowedDevOrigins: ["127.0.0.1", "192.168.15.156"],
   experimental: {
     serverActions: {
       allowedOrigins: ["*.ngrok-free.app", "localhost:3000", "127.0.0.1:3000"],

@@ -1,9 +1,11 @@
 type IconName =
+  | "award"
   | "analytics"
   | "arrow"
   | "dashboard"
   | "fleet"
   | "flight"
+  | "instagram"
   | "map"
   | "report"
   | "signal"
@@ -15,6 +17,25 @@ type IconProps = {
 };
 
 export function Icon({ name }: IconProps) {
+  if (name === "instagram") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="18" height="18" rx="5" />
+        <circle cx="12" cy="12" r="4" />
+        <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+      </svg>
+    );
+  }
+
+  if (name === "award") {
+    return (
+      <svg aria-hidden="true" viewBox="0 0 48 48">
+        <path d="M14 8h20v12a10 10 0 0 1-20 0V8Z" />
+        <path d="M14 12H8v5a8 8 0 0 0 8 8M34 12h6v5a8 8 0 0 1-8 8M24 30v8M18 42h12M20 38h8" />
+      </svg>
+    );
+  }
+
   if (name === "arrow") {
     return (
       <svg aria-hidden="true" viewBox="0 0 24 24">

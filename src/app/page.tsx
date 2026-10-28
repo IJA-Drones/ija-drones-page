@@ -6,8 +6,11 @@ import { ScrollAnimations } from "@/components/scroll-animations";
 import { SiteHeader } from "@/components/site-header";
 import { SystemMockup } from "@/components/system-mockup";
 import { ContactForm } from "@/components/contact-form";
+import { Icon } from "@/components/icon";
 import { SolutionsExperience } from "@/components/solutions-experience";
 import { TerrenoExperience } from "@/components/terreno-experience";
+import { SoftwareRegistration } from "@/components/software-registration";
+import { AwardRecognition } from "@/components/award-recognition";
 import { contactEmailHref, site } from "@/content/site";
 
 const solutions = [
@@ -154,7 +157,10 @@ export default function Home() {
               <BrazilMap />
             </div>
           </div>
+          <SoftwareRegistration />
         </section>
+
+        <AwardRecognition />
 
         {/* NOTÍCIA / EXPANSÃO ITAJUBÁ COM TERRENO 3D */}
         <section className="news-expansion section" id="fabrica-itajuba">
@@ -268,12 +274,30 @@ export default function Home() {
               </a>
               <p>Soluções tecnológicas avançadas para o mercado de drones e aviação agrícola.</p>
               <a className="footer-email" href={contactEmailHref}>{site.email}</a>
+              {site.instagram && (
+                <a
+                  className="footer-social"
+                  href={site.instagram.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon name="instagram" />
+                  <span>
+                    <strong>Instagram</strong>
+                    <span>{site.instagram.handle}</span>
+                  </span>
+                  <span aria-hidden="true">↗</span>
+                  <span className="sr-only"> (abre em nova aba)</span>
+                </a>
+              )}
             </div>
 
             <nav className="footer-column" aria-label="Produto">
               <h3>Produto</h3>
               <a href="#solucoes">Funcionalidades</a>
               <a href="#plataforma">Demonstração</a>
+              <a href="#registro-inpi">Registro do software</a>
+              <a href="#reconhecimento-abes">Reconhecimento ABES</a>
               <a href="#como-funciona">Recursos</a>
               <a href="#contato">Para empresas</a>
             </nav>

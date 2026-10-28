@@ -37,6 +37,30 @@ As cores azul e verde foram extraídas da identidade visual fornecida. A
 tipografia sans, as animações e as regras responsivas estão configuradas em
 `src/app/globals.css`.
 
+### Reconhecimento ABES
+
+O bloco `#reconhecimento-abes` é uma seção independente entre Tecnologia
+brasileira e a notícia de Itajubá. Usa os dados de
+`site.abesAward` em `src/content/site.ts`. A placa enviada pela IJA comprova o
+**3º lugar na categoria Saúde**, em “Soluções Mais Admiradas: Iniciativas que
+Geram um Impacto Real”. A operação em São Paulo foi informada pela IJA; a página
+geral da premiação fornece contexto.
+
+Quando a ABES publicar a notícia sobre a IJA, preencha `officialPublication` com
+`title`, `url` e, se disponíveis, `publishedAt` (AAAA-MM-DD) e `summary` fiel à
+matéria. Isso exibe a fonte e habilita o botão “Ler publicação da ABES”.
+Somente a foto tratada da placa está habilitada em `photos`, com caminho local
+em `public/images/abes-2026/`, descrição, legenda e dimensões. Com uma foto, a
+seção exibe o texto à esquerda e a placa completa à direita no desktop, e
+empilha os conteúdos no celular. A lista aceita outras fotos e se adapta para
+uma galeria, preservando as imagens inteiras e permitindo abri-las em nova aba.
+A foto do grupo aguarda confirmação antes de ser incluída. Substitua os
+caminhos e as dimensões quando as fotos oficiais estiverem disponíveis. A placa
+fotografada
+não substitui um documento PDF: `certificateUrl` continua vazio até que um
+certificado seja fornecido. A publicação e o botão de certificado só aparecem
+quando os respectivos dados são preenchidos.
+
 ## Imagens
 
 As imagens utilizadas no protótipo estão armazenadas em `public/images`, evitando

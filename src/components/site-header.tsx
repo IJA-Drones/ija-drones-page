@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+import { Icon } from "@/components/icon";
 import { site } from "@/content/site";
 
 export function SiteHeader() {
@@ -52,6 +53,18 @@ export function SiteHeader() {
         </nav>
 
         <div className="header-actions">
+          {site.instagram && (
+            <a
+              className="header-instagram"
+              href={site.instagram.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Instagram da IJA Drones (${site.instagram.handle}), abre em nova aba`}
+              title={`Instagram · ${site.instagram.handle}`}
+            >
+              <Icon name="instagram" />
+            </a>
+          )}
           <button
             className="site-theme-toggle"
             type="button"
@@ -91,6 +104,20 @@ export function SiteHeader() {
                 {item.label}
               </a>
             ))}
+            {site.instagram && (
+              <a
+                className="mobile-menu__social"
+                href={site.instagram.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setMenuOpen(false)}
+              >
+                <Icon name="instagram" />
+                <span>Instagram <small>{site.instagram.handle}</small></span>
+                <span aria-hidden="true">↗</span>
+                <span className="sr-only"> (abre em nova aba)</span>
+              </a>
+            )}
             <a className="mobile-menu__cta" href="#contato" onClick={() => setMenuOpen(false)}>
               Planejar operação
             </a>

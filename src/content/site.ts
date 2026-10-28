@@ -1,6 +1,10 @@
 export const site = {
   name: "IJA Drones",
   email: "suporte@ijadrones.com.br",
+  instagram: {
+    url: "https://www.instagram.com/ijadronesbrasil/",
+    handle: "@ijadronesbrasil",
+  },
   contactEmail: {
     subject: "Tenho interesse nos serviços da IJA Drones",
     body: [
@@ -20,6 +24,50 @@ export const site = {
     { label: "Método", href: "#como-funciona" },
     { label: "Contato", href: "#contato" },
   ],
+  softwareRegistration: {
+    name: "IJA System",
+    number: "BR 51 2026 007433-9" as string | null,
+    holder: "IJA Drones Brasil Ltda. - ME" as string | null,
+    issuedAt: "2026-09-15" as string | null,
+    certificateUrl:
+      "/docs/ija-system/certificado-inpi-br-51-2026-007433-9.pdf" as string | null,
+    // O endereço de detalhes do INPI depende de uma sessão iniciada no portal.
+    consultationUrl:
+      "https://busca.inpi.gov.br/pePI/jsp/programas/ProgramaSearchBasico.jsp" as string | null,
+  },
+  abesAward: {
+    name: "Prêmio Brasil, País Digital",
+    edition: "2026",
+    organization: "ABES",
+    category: "Saúde",
+    title: "3º lugar em",
+    recognition: "Soluções Mais Admiradas",
+    recognitionDescription: "Iniciativas que Geram um Impacto Real",
+    operation: "Combate à dengue em São Paulo.",
+    // Colocação e categoria conferidas na placa; operação informada pela IJA.
+    description:
+      "A IJA Drones Brasil recebeu o 3º lugar na categoria Saúde do Prêmio Brasil, País Digital, da ABES, com sua operação de combate à dengue em São Paulo.",
+    awardUrl: "https://abes.org.br/premiobrasilpaisdigital/",
+    // Preencher com a notícia sobre a IJA quando ela for publicada pela ABES.
+    officialPublication: null as {
+      title: string;
+      url: string;
+      publishedAt?: string; // ISO 8601: AAAA-MM-DD.
+      summary?: string;
+    } | null,
+    // Preencher apenas se um certificado em PDF for fornecido.
+    certificateUrl: null as string | null,
+    photos: [
+      {
+        src: "/images/abes-2026/placa-saude-tratada.png",
+        alt: "Placa do Prêmio Brasil, país digital, concedida à IJA Drones Brasil pelo 3º lugar em Saúde, com a identificação da ABES.",
+        title: "Um reconhecimento ao impacto real.",
+        caption: "Placa recebida pela IJA Drones Brasil na categoria Saúde.",
+        width: 1086,
+        height: 1448,
+      },
+    ],
+  },
   highlights: [
     {
       label: "Operação no campo",
