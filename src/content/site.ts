@@ -39,14 +39,15 @@ export const site = {
     name: "Prêmio Brasil, País Digital",
     edition: "2026",
     organization: "ABES",
+    productName: "IJA System",
     category: "Saúde",
-    title: "3º lugar em",
+    title: "Software premiado.",
+    placement: "3º lugar",
     recognition: "Soluções Mais Admiradas",
     recognitionDescription: "Iniciativas que Geram um Impacto Real",
-    operation: "Combate à dengue em São Paulo.",
-    // Colocação e categoria conferidas na placa; operação informada pela IJA.
+    // Colocação e categoria conferidas na placa; software e aplicação confirmados pela IJA.
     description:
-      "A IJA Drones Brasil recebeu o 3º lugar na categoria Saúde do Prêmio Brasil, País Digital, da ABES, com sua operação de combate à dengue em São Paulo.",
+      "Reconhecido pela ABES por sua aplicação na gestão das operações de combate à dengue em São Paulo.",
     awardUrl: "https://abes.org.br/premiobrasilpaisdigital/",
     // Preencher com a notícia sobre a IJA quando ela for publicada pela ABES.
     officialPublication: null as {
@@ -61,8 +62,8 @@ export const site = {
       {
         src: "/images/abes-2026/placa-saude-tratada.png",
         alt: "Placa do Prêmio Brasil, país digital, concedida à IJA Drones Brasil pelo 3º lugar em Saúde, com a identificação da ABES.",
-        title: "Um reconhecimento ao impacto real.",
-        caption: "Placa recebida pela IJA Drones Brasil na categoria Saúde.",
+        title: "O reconhecimento do IJA System.",
+        caption: "3º lugar em Saúde · Prêmio Brasil, País Digital 2026.",
         width: 1086,
         height: 1448,
       },

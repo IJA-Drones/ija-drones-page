@@ -43,8 +43,12 @@ O bloco `#reconhecimento-abes` é uma seção independente entre Tecnologia
 brasileira e a notícia de Itajubá. Usa os dados de
 `site.abesAward` em `src/content/site.ts`. A placa enviada pela IJA comprova o
 **3º lugar na categoria Saúde**, em “Soluções Mais Admiradas: Iniciativas que
-Geram um Impacto Real”. A operação em São Paulo foi informada pela IJA; a página
-geral da premiação fornece contexto.
+Geram um Impacto Real”. A IJA confirmou que a solução premiada é o software
+IJA System, aplicado à gestão das operações de combate à dengue em São Paulo.
+O software aparece como protagonista da seção, com texto breve sobre o
+reconhecimento e a aplicação em São Paulo, sem repetir as funções apresentadas
+na seção do sistema e sem botão para conhecê-lo. A página geral da premiação
+fornece contexto.
 
 Quando a ABES publicar a notícia sobre a IJA, preencha `officialPublication` com
 `title`, `url` e, se disponíveis, `publishedAt` (AAAA-MM-DD) e `summary` fiel à

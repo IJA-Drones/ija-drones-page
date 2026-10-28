@@ -21,7 +21,7 @@ export function AwardRecognition() {
     >
       <div className="container">
         <div className="award-recognition__topline">
-          <span className="kicker">Reconhecimento nacional</span>
+          <span className="kicker">Software brasileiro premiado</span>
           <span className="award-recognition__edition">
             {award.organization} SUMMIT · {award.edition}
           </span>
@@ -34,16 +34,19 @@ export function AwardRecognition() {
             <div className="award-recognition__copy">
               <p className="award-recognition__prize">{award.name}</p>
               <h2 id="award-recognition-title">
-                {award.title}{" "}
-                <span>{award.category}.</span>
+                {award.productName}.
+                <span>{award.title}</span>
               </h2>
+              <p className="award-recognition__placement">
+                <strong>{award.placement}</strong>
+                <span>Categoria {award.category}</span>
+              </p>
               <div className="award-recognition__recognition">
                 <strong>{award.recognition}</strong>
                 <span>{award.recognitionDescription}</span>
               </div>
             </div>
             <div className="award-recognition__context">
-              <p className="award-recognition__operation">{award.operation}</p>
               <p className="award-recognition__description">{award.description}</p>
 
               {publication && (
@@ -64,7 +67,7 @@ export function AwardRecognition() {
               <div className="award-recognition__actions">
                 {publication && (
                   <a
-                    className="button award-recognition__primary"
+                    className="button award-recognition__link"
                     href={publication.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -87,7 +90,7 @@ export function AwardRecognition() {
                   </a>
                 )}
                 <a
-                  className={"button " + (publication ? "award-recognition__link" : "award-recognition__primary")}
+                  className="button award-recognition__link"
                   href={award.awardUrl}
                   target="_blank"
                   rel="noopener noreferrer"
